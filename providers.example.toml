@@ -1,0 +1,52 @@
+# Copy to providers.toml (git-ignored) to add your own endpoints.
+# Keys: either embed them via ${ENV_VAR} in `url` or `headers`, or leave the
+# URL bare if a proxy injects the Authorization header for that host.
+# min_interval = seconds between requests to this provider (be polite).
+
+[[provider]]
+name = "publicnode"
+chain = "ethereum"
+url = "https://ethereum-rpc.publicnode.com"
+min_interval = 1.0
+
+[[provider]]
+name = "drpc"
+chain = "ethereum"
+url = "https://eth.drpc.org"
+min_interval = 1.0
+
+[[provider]]
+name = "1rpc"
+chain = "ethereum"
+url = "https://1rpc.io/eth"
+min_interval = 1.5
+
+# [[provider]]
+# name = "alchemy"
+# chain = "ethereum"
+# url = "https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}"
+# min_interval = 1.0
+
+# [[provider]]
+# name = "infura"
+# chain = "ethereum"
+# url = "https://mainnet.infura.io/v3/${INFURA_KEY}"
+# min_interval = 1.0
+
+[[provider]]
+name = "publicnode"
+chain = "base"
+url = "https://base-rpc.publicnode.com"
+min_interval = 1.0
+
+[[provider]]
+name = "base-official"
+chain = "base"
+url = "https://mainnet.base.org"
+min_interval = 1.0
+
+[[provider]]
+name = "1rpc"
+chain = "base"
+url = "https://1rpc.io/base"
+min_interval = 1.5

@@ -1,0 +1,9 @@
+requests==2.34.2
+rlp==5.0.0
+eth-hash[pycryptodome]==0.8.0
+pycryptodome==3.24.1
+trie==4.0.0
+hexbytes==2.0.0
+eth-utils==6.0.0
+matplotlib==3.11.2
+pytest==9.2.0

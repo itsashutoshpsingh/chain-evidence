@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chain-evidence"
+version = "0.1.0"
+description = "Cross-check on-chain evidence across independent RPC providers and prove receipts against block headers."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Ashutosh Pal Singh"}]
+requires-python = ">=3.11"
+dependencies = [
+  "requests==2.34.2",
+  "rlp==5.0.0",
+  "eth-hash[pycryptodome]==0.8.0",
+  "trie==4.0.0",
+]
+
+[project.optional-dependencies]
+plots = ["matplotlib==3.11.2"]
+test = ["pytest==9.2.0"]
+
+[project.scripts]
+chain-evidence = "chain_evidence.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
