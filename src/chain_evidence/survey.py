@@ -143,8 +143,8 @@ def tx_survey(providers, chain, n=50, seed=None, log=print):
         if c["agree"] is False:
             row["bundle"] = _save_bundle(chain, run_id + "_tx", len(rows), b)
         rows.append(row)
+        _append("tx_survey.csv", [row])
         log(f"[tx {len(rows)}/{n}] {chain} agree={row['agree']} {row['receipt_diff']} {row['tx_diff']}")
-    _append("tx_survey.csv", rows)
     return run_id, rows
 
 
@@ -161,11 +161,13 @@ def root_survey(providers, chain, n=20, seed=None, per_tx_max=80, log=print):
             log(f"[root {i + 1}/{n}] {chain} {r['provider']} {number} hdr={r.get('header_hash_ok')} "
                 f"txroot={r.get('transactions_root_ok')} rroot={r.get('receipts_root_ok')} "
                 f"getLogs_missing={r.get('getlogs_missing')} err={r.get('error', '')[:60]}")
-    keys = ["run_id", "chain", "provider", "block", "hash", "number", "receipts_method", "receipts_n",
+            _append("root_survey.csv", [{k: r.get(k, "") for k in ROOT_KEYS}])
+    return run_id, rows
+
+
+ROOT_KEYS = ["run_id", "chain", "provider", "block", "hash", "number", "receipts_method", "receipts_n",
             "header_hash_ok", "transactions_root_ok", "receipts_root_ok", "receipts_block_hash_ok",
             "getlogs_missing", "getlogs_mismatch", "getlogs_extra", "getlogs_error", "receipts_null", "error"]
-    _append("root_survey.csv", [{k: r.get(k, "") for k in keys} for r in rows])
-    return run_id, rows
 
 
 def block_audit(providers, chain, frm, to, n=40, seed=0, log=print):

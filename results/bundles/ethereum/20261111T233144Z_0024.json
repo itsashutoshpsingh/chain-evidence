@@ -1,0 +1,277 @@
+{
+ "schema": "chain-evidence/bundle/v1",
+ "tool": "chain-evidence 0.1.0",
+ "created_at": "2026-11-11T23:36:44+00:00",
+ "chain": "ethereum",
+ "request": {
+  "method": "eth_getLogs",
+  "params": [
+   {
+    "fromBlock": "0x192095a",
+    "toBlock": "0x192095a",
+    "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "topics": [
+     "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+    ]
+   }
+  ]
+ },
+ "responses": [
+  {
+   "provider": "publicnode",
+   "method": "eth_getLogs",
+   "params": [
+    {
+     "fromBlock": "0x192095a",
+     "toBlock": "0x192095a",
+     "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+     ]
+    }
+   ],
+   "ok": false,
+   "result": null,
+   "error": "-32602: Archive requests require a personal token. Get one at: https://www.allnodes.com/publicnode",
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:36:39.912+00:00",
+   "received_at": "2026-11-11T23:36:39.993+00:00",
+   "latency_ms": 80.9,
+   "endpoint": "https://ethereum-rpc.publicnode.com",
+   "result_sha256": null
+  },
+  {
+   "provider": "drpc",
+   "method": "eth_getLogs",
+   "params": [
+    {
+     "fromBlock": "0x192095a",
+     "toBlock": "0x192095a",
+     "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+     ]
+    }
+   ],
+   "ok": true,
+   "result": [
+    {
+     "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "0x000000000000000000000000addc26a3854feabfd20d6bf658254088d83a425a",
+      "0x0000000000000000000000006d4bb2963a77c327a16c00c54eb1a360b70edbb1"
+     ],
+     "data": "0x000000000000000000000000000000000000000000000000000049bd7d4f5e00",
+     "blockHash": "0x641f01d7976f6b42fd55572b3ddd07694e4a5d6ed797fdc7db5dd46a31f5b5c6",
+     "blockNumber": "0x192095a",
+     "blockTimestamp": "0x6aec525b",
+     "transactionHash": "0xbf587d8f59d44407e63cc1741795e50fe33ff684fc10abc53f6ae1d6c1253b53",
+     "transactionIndex": "0x37",
+     "logIndex": "0x28",
+     "removed": false
+    },
+    {
+     "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "0x0000000000000000000000007a250d5630b4cf539739df2c5dacb4c659f2488d",
+      "0x000000000000000000000000ec1b18e99119166901ff8aad5ff2ba712fdc00bf"
+     ],
+     "data": "0x00000000000000000000000000000000000000000000000033590a6584f20000",
+     "blockHash": "0x641f01d7976f6b42fd55572b3ddd07694e4a5d6ed797fdc7db5dd46a31f5b5c6",
+     "blockNumber": "0x192095a",
+     "blockTimestamp": "0x6aec525b",
+     "transactionHash": "0x065a874b159ad6a92f992257c70af9428b7fe1af2d11d7949617ba694fe9ed3f",
+     "transactionIndex": "0x42",
+     "logIndex": "0x32",
+     "removed": false
+    },
+    {
+     "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "0x0000000000000000000000001ac1a8feaaea1900c4166deeed0c11cc10669d36",
+      "0x000000000000000000000000addc26a3854feabfd20d6bf658254088d83a425a"
+     ],
+     "data": "0x00000000000000000000000000000000000000000000000000b7da203e83dc4a",
+     "blockHash": "0x641f01d7976f6b42fd55572b3ddd07694e4a5d6ed797fdc7db5dd46a31f5b5c6",
+     "blockNumber": "0x192095a",
+     "blockTimestamp": "0x6aec525b",
+     "transactionHash": "0xf46476ac6864c42446d8e980dd253264810ba000d9576f81d3cb4b7e640ae2de",
+     "transactionIndex": "0x46",
+     "logIndex": "0x3b",
+     "removed": false
+    },
+    {
+     "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "0x0000000000000000000000001445f32d1a74872ba41f3d8cf4022e9996120b31",
+      "0x000000000000000000000000addc26a3854feabfd20d6bf658254088d83a425a"
+     ],
+     "data": "0x0000000000000000000000000000000000000000000000000136a0a635c08c78",
+     "blockHash": "0x641f01d7976f6b42fd55572b3ddd07694e4a5d6ed797fdc7db5dd46a31f5b5c6",
+     "blockNumber": "0x192095a",
+     "blockTimestamp": "0x6aec525b",
+     "transactionHash": "0xf46476ac6864c42446d8e980dd253264810ba000d9576f81d3cb4b7e640ae2de",
+     "transactionIndex": "0x46",
+     "logIndex": "0x41",
+     "removed": false
+    },
+    {
+     "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "0x000000000000000000000000addc26a3854feabfd20d6bf658254088d83a425a",
+      "0x0000000000000000000000002192bc3b4028acc1113f2cd9ac2cba70c36520db"
+     ],
+     "data": "0x00000000000000000000000000000000000000000000000002bfb3ed81b2d9b8",
+     "blockHash": "0x641f01d7976f6b42fd55572b3ddd07694e4a5d6ed797fdc7db5dd46a31f5b5c6",
+     "blockNumber": "0x192095a",
+     "blockTimestamp": "0x6aec525b",
+     "transactionHash": "0xf46476ac6864c42446d8e980dd253264810ba000d9576f81d3cb4b7e640ae2de",
+     "transactionIndex": "0x46",
+     "logIndex": "0x44",
+     "removed": false
+    },
+    {
+     "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "0x0000000000000000000000007e8665b1b724ef90e8b3d7e834e47bb1f3e65c84",
+      "0x000000000000000000000000ab889a00eec0d6169cc08c9e9cc0be6f16e0068c"
+     ],
+     "data": "0x0000000000000000000000000000000000000000000000000148c442fcfdfc1c",
+     "blockHash": "0x641f01d7976f6b42fd55572b3ddd07694e4a5d6ed797fdc7db5dd46a31f5b5c6",
+     "blockNumber": "0x192095a",
+     "blockTimestamp": "0x6aec525b",
+     "transactionHash": "0xcb84c52bec265c26cd6e677aacd06442f8112facd9acc486d4cd88ec9402667e",
+     "transactionIndex": "0x62",
+     "logIndex": "0xac",
+     "removed": false
+    }
+   ],
+   "error": null,
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:36:39.913+00:00",
+   "received_at": "2026-11-11T23:36:40.051+00:00",
+   "latency_ms": 137.4,
+   "endpoint": "https://eth.drpc.org",
+   "result_sha256": "cfcfee77a1eb8a33481ba2a957128811b75ba1895e961d701984d8b130cd4b02"
+  },
+  {
+   "provider": "1rpc",
+   "method": "eth_getLogs",
+   "params": [
+    {
+     "fromBlock": "0x192095a",
+     "toBlock": "0x192095a",
+     "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+     ]
+    }
+   ],
+   "ok": true,
+   "result": [],
+   "error": null,
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:36:40.811+00:00",
+   "received_at": "2026-11-11T23:36:40.874+00:00",
+   "latency_ms": 63.3,
+   "endpoint": "https://1rpc.io/eth",
+   "result_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  }
+ ],
+ "comparison": {
+  "agree": false,
+  "union": 6,
+  "providers": {
+   "drpc": {
+    "count": 6,
+    "missing": 0,
+    "content_mismatch": 0,
+    "missing_keys": []
+   },
+   "1rpc": {
+    "count": 0,
+    "missing": 6,
+    "content_mismatch": 0,
+    "missing_keys": [
+     [
+      "0x641f01d7976f6b42fd55572b3ddd07694e4a5d6ed797fdc7db5dd46a31f5b5c6",
+      "0x065a874b159ad6a92f992257c70af9428b7fe1af2d11d7949617ba694fe9ed3f",
+      50
+     ],
+     [
+      "0x641f01d7976f6b42fd55572b3ddd07694e4a5d6ed797fdc7db5dd46a31f5b5c6",
+      "0xbf587d8f59d44407e63cc1741795e50fe33ff684fc10abc53f6ae1d6c1253b53",
+      40
+     ],
+     [
+      "0x641f01d7976f6b42fd55572b3ddd07694e4a5d6ed797fdc7db5dd46a31f5b5c6",
+      "0xcb84c52bec265c26cd6e677aacd06442f8112facd9acc486d4cd88ec9402667e",
+      172
+     ],
+     [
+      "0x641f01d7976f6b42fd55572b3ddd07694e4a5d6ed797fdc7db5dd46a31f5b5c6",
+      "0xf46476ac6864c42446d8e980dd253264810ba000d9576f81d3cb4b7e640ae2de",
+      59
+     ],
+     [
+      "0x641f01d7976f6b42fd55572b3ddd07694e4a5d6ed797fdc7db5dd46a31f5b5c6",
+      "0xf46476ac6864c42446d8e980dd253264810ba000d9576f81d3cb4b7e640ae2de",
+      65
+     ],
+     [
+      "0x641f01d7976f6b42fd55572b3ddd07694e4a5d6ed797fdc7db5dd46a31f5b5c6",
+      "0xf46476ac6864c42446d8e980dd253264810ba000d9576f81d3cb4b7e640ae2de",
+      68
+     ]
+    ]
+   }
+  },
+  "errors": {
+   "publicnode": "-32602: Archive requests require a personal token. Get one at: https://www.allnodes.com/publicnode"
+  }
+ },
+ "finality": {
+  "heads": {
+   "publicnode": {
+    "finalized": 26394927,
+    "latest": 26394991
+   },
+   "drpc": {
+    "finalized": 26394927,
+    "latest": 26394991
+   },
+   "1rpc": {
+    "finalized": 26394863,
+    "latest": 26394991
+   }
+  },
+  "floor": 26394863,
+  "range_final": true
+ },
+ "proofs": {
+  "proven": true,
+  "true_count": 6,
+  "proof_sources": [
+   "drpc"
+  ],
+  "providers": {
+   "drpc": {
+    "missing": 0,
+    "content_mismatch": 0,
+    "extra": 0
+   },
+   "1rpc": {
+    "missing": 6,
+    "content_mismatch": 0,
+    "extra": 0
+   }
+  }
+ },
+ "bundle_sha256": "c8b48a68c059b64d1b4578b6e69c1dac6423c47f32b1343e0cf07e79d6b90c81"
+}
