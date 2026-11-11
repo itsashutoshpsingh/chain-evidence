@@ -1,0 +1,225 @@
+{
+ "schema": "chain-evidence/bundle/v1",
+ "tool": "chain-evidence 0.1.0",
+ "created_at": "2026-11-11T23:25:37+00:00",
+ "chain": "ethereum",
+ "request": {
+  "method": "tx-check",
+  "params": [
+   "0x96a0a42577f81e0a648fc6836e7955a7b0a1a6368fc8de77e7b72fcecc35eb3d"
+  ]
+ },
+ "responses": [
+  {
+   "provider": "publicnode",
+   "method": "eth_getTransactionReceipt",
+   "params": [
+    "0x96a0a42577f81e0a648fc6836e7955a7b0a1a6368fc8de77e7b72fcecc35eb3d"
+   ],
+   "ok": true,
+   "result": null,
+   "error": null,
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:25:32.972+00:00",
+   "received_at": "2026-11-11T23:25:33.074+00:00",
+   "latency_ms": 102.3,
+   "endpoint": null,
+   "result_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+  },
+  {
+   "provider": "drpc",
+   "method": "eth_getTransactionReceipt",
+   "params": [
+    "0x96a0a42577f81e0a648fc6836e7955a7b0a1a6368fc8de77e7b72fcecc35eb3d"
+   ],
+   "ok": true,
+   "result": {
+    "blockHash": "0xfec64df8e87d11e6e110f74c6f15392d7e100c1b4cc316d6fc0f034dced80739",
+    "blockNumber": "0x192018e",
+    "contractAddress": null,
+    "cumulativeGasUsed": "0x64a21e",
+    "effectiveGasPrice": "0x1609cda1a",
+    "from": "0x91d40e4818f4d4c57b4578d9eca6afc92ac8debe",
+    "gasUsed": "0x86bd",
+    "logs": [
+     {
+      "address": "0xbb0e17ef65f82ab018d8edd776e8dd940327b28b",
+      "topics": [
+       "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+       "0x00000000000000000000000091d40e4818f4d4c57b4578d9eca6afc92ac8debe",
+       "0x000000000000000000000000bb96e1253431f8d0523cd8337ca85ce47f01e5e2"
+      ],
+      "data": "0x000000000000000000000000000000000000000000000000006a94d74f430000",
+      "blockNumber": "0x192018e",
+      "transactionHash": "0x96a0a42577f81e0a648fc6836e7955a7b0a1a6368fc8de77e7b72fcecc35eb3d",
+      "transactionIndex": "0x42",
+      "blockHash": "0xfec64df8e87d11e6e110f74c6f15392d7e100c1b4cc316d6fc0f034dced80739",
+      "blockTimestamp": "0x6aebf49b",
+      "logIndex": "0xa7",
+      "removed": false
+     }
+    ],
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000800000000010000000000000000000000000000000000000000000000000000004000000000000000000000000000008000000000000000000000000000000000001000000000000000000000000000000000000000040000000000000000010000000000000000000000000000000000010000000000000000000000000800000000000008000000000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000",
+    "status": "0x1",
+    "to": "0xbb0e17ef65f82ab018d8edd776e8dd940327b28b",
+    "transactionHash": "0x96a0a42577f81e0a648fc6836e7955a7b0a1a6368fc8de77e7b72fcecc35eb3d",
+    "transactionIndex": "0x42",
+    "type": "0x2"
+   },
+   "error": null,
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:25:32.131+00:00",
+   "received_at": "2026-11-11T23:25:32.252+00:00",
+   "latency_ms": 121.3,
+   "endpoint": null,
+   "result_sha256": "d850e54e0791180a60b2bbac8a242c7c0ac6f91cf25f8365fd6614a99719f174"
+  },
+  {
+   "provider": "1rpc",
+   "method": "eth_getTransactionReceipt",
+   "params": [
+    "0x96a0a42577f81e0a648fc6836e7955a7b0a1a6368fc8de77e7b72fcecc35eb3d"
+   ],
+   "ok": false,
+   "result": null,
+   "error": "-32001: You've reached the usage limit for your current plan. To continue with higher limits and uninterrupted access, please upgrade here: https://www.1rpc.io/#pricing",
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:25:33.393+00:00",
+   "received_at": "2026-11-11T23:25:33.474+00:00",
+   "latency_ms": 80.5,
+   "endpoint": null,
+   "result_sha256": null
+  },
+  {
+   "provider": "publicnode",
+   "method": "eth_getTransactionByHash",
+   "params": [
+    "0x96a0a42577f81e0a648fc6836e7955a7b0a1a6368fc8de77e7b72fcecc35eb3d"
+   ],
+   "ok": true,
+   "result": {
+    "type": "0x2",
+    "chainId": "0x1",
+    "nonce": "0x131379",
+    "gas": "0x33450",
+    "maxFeePerGas": "0x75c88f2d00",
+    "maxPriorityFeePerGas": "0x15e3ca500",
+    "to": "0xbb0e17ef65f82ab018d8edd776e8dd940327b28b",
+    "value": "0x0",
+    "accessList": [],
+    "input": "0xa9059cbb000000000000000000000000bb96e1253431f8d0523cd8337ca85ce47f01e5e2000000000000000000000000000000000000000000000000006a94d74f430000",
+    "r": "0xe66cf432fb1f146026d3fb8275fdd80cdd0a802897f97cbf58e621dfc3755fab",
+    "s": "0x65e9cc4162ca399f87c4f840d9d0f37c896ff99e4b02cb178cefb47eb580ab5c",
+    "yParity": "0x1",
+    "v": "0x1",
+    "hash": "0x96a0a42577f81e0a648fc6836e7955a7b0a1a6368fc8de77e7b72fcecc35eb3d",
+    "blockHash": "0xfec64df8e87d11e6e110f74c6f15392d7e100c1b4cc316d6fc0f034dced80739",
+    "blockNumber": "0x192018e",
+    "transactionIndex": "0x42",
+    "from": "0x91d40e4818f4d4c57b4578d9eca6afc92ac8debe",
+    "gasPrice": "0x1609cda1a",
+    "blockTimestamp": "0x6aebf49b"
+   },
+   "error": null,
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:25:33.972+00:00",
+   "received_at": "2026-11-11T23:25:34.071+00:00",
+   "latency_ms": 98.6,
+   "endpoint": null,
+   "result_sha256": "e8f2e87408304e5553ecb2bcf1a983ee66c518fccffb83ad7c026cc59cee936e"
+  },
+  {
+   "provider": "drpc",
+   "method": "eth_getTransactionByHash",
+   "params": [
+    "0x96a0a42577f81e0a648fc6836e7955a7b0a1a6368fc8de77e7b72fcecc35eb3d"
+   ],
+   "ok": true,
+   "result": {
+    "blockHash": "0xfec64df8e87d11e6e110f74c6f15392d7e100c1b4cc316d6fc0f034dced80739",
+    "blockNumber": "0x192018e",
+    "blockTimestamp": "0x6aebf49b",
+    "from": "0x91d40e4818f4d4c57b4578d9eca6afc92ac8debe",
+    "gas": "0x33450",
+    "gasPrice": "0x1609cda1a",
+    "maxPriorityFeePerGas": "0x15e3ca500",
+    "maxFeePerGas": "0x75c88f2d00",
+    "hash": "0x96a0a42577f81e0a648fc6836e7955a7b0a1a6368fc8de77e7b72fcecc35eb3d",
+    "input": "0xa9059cbb000000000000000000000000bb96e1253431f8d0523cd8337ca85ce47f01e5e2000000000000000000000000000000000000000000000000006a94d74f430000",
+    "nonce": "0x131379",
+    "to": "0xbb0e17ef65f82ab018d8edd776e8dd940327b28b",
+    "transactionIndex": "0x42",
+    "value": "0x0",
+    "type": "0x2",
+    "accessList": [],
+    "chainId": "0x1",
+    "v": "0x1",
+    "yParity": "0x1",
+    "r": "0xe66cf432fb1f146026d3fb8275fdd80cdd0a802897f97cbf58e621dfc3755fab",
+    "s": "0x65e9cc4162ca399f87c4f840d9d0f37c896ff99e4b02cb178cefb47eb580ab5c"
+   },
+   "error": null,
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:25:33.475+00:00",
+   "received_at": "2026-11-11T23:25:33.550+00:00",
+   "latency_ms": 75.1,
+   "endpoint": null,
+   "result_sha256": "e8f2e87408304e5553ecb2bcf1a983ee66c518fccffb83ad7c026cc59cee936e"
+  },
+  {
+   "provider": "1rpc",
+   "method": "eth_getTransactionByHash",
+   "params": [
+    "0x96a0a42577f81e0a648fc6836e7955a7b0a1a6368fc8de77e7b72fcecc35eb3d"
+   ],
+   "ok": false,
+   "result": null,
+   "error": "-32001: You've reached the usage limit for your current plan. To continue with higher limits and uninterrupted access, please upgrade here: https://www.1rpc.io/#pricing",
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:25:34.893+00:00",
+   "received_at": "2026-11-11T23:25:34.969+00:00",
+   "latency_ms": 76.0,
+   "endpoint": null,
+   "result_sha256": null
+  }
+ ],
+ "comparison": {
+  "receipt": {
+   "agree": false,
+   "null_from": [
+    "publicnode"
+   ],
+   "fields": []
+  },
+  "transaction": {
+   "agree": true,
+   "fields": []
+  },
+  "errors": {
+   "receipt:1rpc": "-32001: You've reached the usage limit for your current plan. To continue with higher limits and uninterrupted access, please upgrade here: https://www.1rpc.io/#pricing",
+   "tx:1rpc": "-32001: You've reached the usage limit for your current plan. To continue with higher limits and uninterrupted access, please upgrade here: https://www.1rpc.io/#pricing"
+  },
+  "agree": false
+ },
+ "finality": {
+  "heads": {
+   "publicnode": {
+    "finalized": 26394895,
+    "latest": 26394961
+   },
+   "drpc": {
+    "finalized": 26394895,
+    "latest": 26394961
+   },
+   "1rpc": {
+    "finalized": null,
+    "latest": null
+   }
+  },
+  "floor": 26394895,
+  "block": 26345870,
+  "block_final": true
+ },
+ "proofs": null,
+ "bundle_sha256": "6a5f3d3fa26fdb8fd008b3f7c26439c57a62d95008b0deef64987a7bfb99f4e5"
+}
