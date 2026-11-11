@@ -1,18 +1,18 @@
 {
  "project": "chain-evidence",
- "headline": "Asked 3 Ethereum providers the same eth_getLogs question across 261 finalised block ranges; 1 of 198 comparable ranges disagreed.",
+ "headline": "Asked 3 Ethereum providers the same eth_getLogs question across 400 finalised block ranges; 2 of 303 comparable ranges disagreed.",
  "metrics": [
   {
    "label": "ethereum: finalised ranges compared",
-   "value": 198
+   "value": 303
   },
   {
    "label": "ethereum: disagreement rate",
-   "value": "0.5% (95% CI 0.1\u20132.8%)"
+   "value": "0.7% (95% CI 0.2\u20132.4%)"
   },
   {
    "label": "ethereum: empty successes (0 logs where logs exist)",
-   "value": 1
+   "value": 2
   },
   {
    "label": "base: finalised ranges compared",
@@ -32,11 +32,11 @@
   },
   {
    "label": "base/base-official: blocks whose receipts reproduce receiptsRoot",
-   "value": "14/14"
+   "value": "25/25"
   },
   {
    "label": "base/publicnode: blocks whose receipts reproduce receiptsRoot",
-   "value": "14/14"
+   "value": "25/25"
   },
   {
    "label": "ethereum/1rpc: blocks whose receipts reproduce receiptsRoot",
@@ -48,7 +48,7 @@
   },
   {
    "label": "ethereum/publicnode: blocks whose receipts reproduce receiptsRoot",
-   "value": "15/20"
+   "value": "15/15"
   }
  ],
  "stats": [
@@ -58,59 +58,59 @@
     "20261111T231101Z",
     "20261111T233144Z"
    ],
-   "ranges": 261,
-   "comparable": 198,
-   "disagreements": 1,
-   "rate": 0.005050505050505051,
+   "ranges": 400,
+   "comparable": 303,
+   "disagreements": 2,
+   "rate": 0.006600660066006601,
    "ci": [
-    0.0008920722330250878,
-    0.02804943437413617
+    0.0018119713889009192,
+    0.023743885444070877
    ],
-   "missing_logs": 6,
-   "empty_success": 1,
-   "header_checked": 76,
+   "missing_logs": 286,
+   "empty_success": 2,
+   "header_checked": 111,
    "header_disagree": 0,
-   "near_head": 30,
-   "near_head_comparable": 30,
+   "near_head": 60,
+   "near_head_comparable": 60,
    "near_head_disagree": 0,
-   "adjudicated": 1,
-   "proven": 1,
+   "adjudicated": 2,
+   "proven": 2,
    "wrong_by_provider": {
-    "1rpc": 1
+    "1rpc": 2
    },
-   "deep_ranges": 71,
-   "deep_comparable": 8,
+   "deep_ranges": 109,
+   "deep_comparable": 12,
    "outcomes": {
     "drpc": {
-     "answered, no second answer to compare": 63,
-     "answered, matches": 228
+     "answered, no second answer to compare": 97,
+     "answered, matches": 363
     },
     "publicnode": {
-     "refused (policy)": 71,
-     "answered, matches": 220
+     "refused (policy)": 109,
+     "answered, matches": 351
     },
     "1rpc": {
-     "refused (policy)": 242,
-     "answered, matches": 42,
+     "refused (policy)": 401,
+     "answered, matches": 51,
      "failed (after retries)": 6,
-     "answered, differs": 1
+     "answered, differs": 2
     }
    },
    "error_messages": {
     "publicnode": [
      [
       "-32602: Archive requests require a personal token. Get one at: https://www.allnodes.com/pu",
-      71
+      109
      ]
     ],
     "1rpc": [
      [
       "-32001: You've reached the usage limit for your current plan. To continue with higher limi",
-      230
+      388
      ],
      [
       "This endpoint has been discontinued.",
-      9
+      10
      ],
      [
       "-32602: Archive requests require a personal token. Get one at: https://www.allnodes.com/pu",
@@ -131,28 +131,28 @@
     ]
    },
    "final": {
-    "ranges": 190,
-    "comparable": 190,
+    "ranges": 291,
+    "comparable": 291,
     "disagreements": 0,
     "rate": 0.0,
     "ci": [
      0.0,
-     0.019818243349208835
+     0.013029368989993271
     ],
     "missing_logs": 0,
     "empty_success": 0
    },
    "final_deep": {
-    "ranges": 71,
-    "comparable": 8,
-    "disagreements": 1,
-    "rate": 0.125,
+    "ranges": 109,
+    "comparable": 12,
+    "disagreements": 2,
+    "rate": 0.16666666666666666,
     "ci": [
-     0.02241690886329617,
-     0.4708948057698615
+     0.04696414761482223,
+     0.44803635738467273
     ],
-    "missing_logs": 6,
-    "empty_success": 1
+    "missing_logs": 286,
+    "empty_success": 2
    },
    "per_run": [
     {
@@ -165,11 +165,11 @@
     },
     {
      "run_id": "20261111T233144Z",
-     "n": 56,
-     "k": 1,
-     "rate": 0.017857142857142856,
-     "lo": 0.003159128964463985,
-     "hi": 0.0944585817919329
+     "n": 161,
+     "k": 2,
+     "rate": 0.012422360248447204,
+     "lo": 0.0034132245933606656,
+     "hi": 0.04415729158702098
     }
    ]
   },
@@ -261,10 +261,11 @@
  ],
  "roots": {
   "ethereum/publicnode": {
-   "checked": 20,
-   "header_ok": 20,
-   "txroot_ok": 20,
+   "checked": 15,
+   "header_ok": 15,
+   "txroot_ok": 15,
    "rroot_ok": 15,
+   "null_receipts": 5,
    "getlogs_checked": 3,
    "getlogs_bad": 0
   },
@@ -280,21 +281,21 @@
    "not_checked": 20
   },
   "base/publicnode": {
-   "checked": 14,
-   "header_ok": 14,
-   "txroot_ok": 14,
-   "rroot_ok": 14,
-   "getlogs_checked": 14,
+   "checked": 25,
+   "header_ok": 25,
+   "txroot_ok": 25,
+   "rroot_ok": 25,
+   "getlogs_checked": 25,
    "getlogs_bad": 0
   },
   "base/base-official": {
-   "checked": 14,
-   "header_ok": 14,
-   "txroot_ok": 14,
-   "rroot_ok": 14
+   "checked": 25,
+   "header_ok": 25,
+   "txroot_ok": 25,
+   "rroot_ok": 25
   },
   "base/1rpc": {
-   "not_checked": 14
+   "not_checked": 25
   }
  },
  "tx": {

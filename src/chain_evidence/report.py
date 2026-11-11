@@ -195,7 +195,9 @@ def charts(stats, roots):
         agg = defaultdict(Counter)
         for r in roots:
             k = f"{r['chain']}/{r['provider']}"
-            if r["error"]:
+            if r.get("receipts_null") == "True":
+                agg[k]["null receipts (success, no data)"] += 1
+            elif r["error"]:
                 agg[k]["not checked"] += 1
             elif r["receipts_root_ok"] == "True" and r["header_hash_ok"] == "True" and r["transactions_root_ok"] == "True":
                 agg[k]["all roots reproduce"] += 1
@@ -204,14 +206,15 @@ def charts(stats, roots):
         ks = sorted(agg)
         fig, ax = plt.subplots(figsize=(9, 0.5 * len(ks) + 1.6))
         left = [0] * len(ks)
-        for cat, col in (("all roots reproduce", GREEN), ("root mismatch", RED), ("not checked", GREY)):
+        for cat, col in (("all roots reproduce", GREEN), ("root mismatch", RED),
+                         ("null receipts (success, no data)", AMBER), ("not checked", GREY)):
             vals = [agg[k].get(cat, 0) for k in ks]
             ax.barh(ks, vals, left=left, color=col, label=cat, height=0.55)
             left = [a + b for a, b in zip(left, vals)]
         ax.invert_yaxis()
         ax.set_xlabel("blocks")
         ax.set_title("Header hash + transactionsRoot + receiptsRoot recomputed locally", loc="left", color=GREEN)
-        ax.legend(ncol=3, loc="upper center", bbox_to_anchor=(0.5, -0.25), frameon=False, fontsize=8)
+        ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.25), frameon=False, fontsize=8)
         fig.tight_layout()
         fig.savefig(IMG / "receipts_root_proofs.png", dpi=200)
         plt.close(fig)
@@ -223,6 +226,9 @@ def root_stats(roots):
     out = defaultdict(Counter)
     for r in roots:
         k = (r["chain"], r["provider"])
+        if r.get("receipts_null") == "True":
+            out[k]["null_receipts"] += 1
+            continue
         if r["error"]:
             out[k]["not_checked"] += 1
             continue
@@ -257,14 +263,14 @@ def main():
                          f"({100 * k['rate']:.1f}%, 95% CI {100 * k['ci'][0]:.1f}–{100 * k['ci'][1]:.1f}%) | "
                          f"{k['missing_logs']} | {s['near_head'] if kind == 'final' else '—'}"
                          f"{' (' + str(s['near_head_disagree']) + ' disagreed)' if kind == 'final' else ''} |")
-    rt = ["| Provider | Blocks proven | Header hash | transactionsRoot | receiptsRoot | eth_getLogs vs proven receipts | Not checked |",
-          "|---|---|---|---|---|---|---|"]
+    rt = ["| Provider | Blocks checked | Header hash | transactionsRoot | receiptsRoot | eth_getLogs vs proven receipts | `null` receipts (success, no data) | Not checked (refused / quota) |",
+          "|---|---|---|---|---|---|---|---|"]
     for k, v in sorted(rs.items()):
         n = v.get("checked", 0)
         gl = f"{v.get('getlogs_checked', 0) - v.get('getlogs_bad', 0)}/{v.get('getlogs_checked', 0)} match" \
             if v.get("getlogs_checked") else "n/a"
         rt.append(f"| {k} | {n} | {v.get('header_ok', 0)}/{n} | {v.get('txroot_ok', 0)}/{n} | "
-                  f"{v.get('rroot_ok', 0)}/{n} | {gl} | {v.get('not_checked', 0)} |")
+                  f"{v.get('rroot_ok', 0)}/{n} | {gl} | {v.get('null_receipts', 0)} | {v.get('not_checked', 0)} |")
     (RES / "summary.md").write_text("\n".join(table) + "\n\n" + "\n".join(rt) + "\n")
     eth = next((s for s in stats if s["chain"] == "ethereum"), None)
     summary = {
