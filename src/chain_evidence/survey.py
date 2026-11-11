@@ -27,14 +27,20 @@ RECENT = {"ethereum": 4_500, "base": 20_000}
 
 
 def _append(name, rows):
+    """Append rows; if the columns changed since the file was created, rewrite it with the union."""
     if not rows:
         return
     path = RESULTS / name
-    new = not path.exists()
     keys = list(rows[0].keys())
-    with open(path, "a", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=keys)
-        if new:
+    old = list(csv.DictReader(open(path))) if path.exists() else []
+    if old and list(old[0].keys()) != keys:
+        keys = list(dict.fromkeys(list(old[0].keys()) + keys))
+        rows, mode = old + rows, "w"
+    else:
+        mode = "a"
+    with open(path, mode, newline="") as f:
+        w = csv.DictWriter(f, fieldnames=keys, restval="")
+        if mode == "w" or not old:
             w.writeheader()
         w.writerows(rows)
 
