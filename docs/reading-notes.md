@@ -69,8 +69,24 @@ the header, plus structural checks (parent hash chain, contiguous indices, cumul
   L1-fee fields (`l1Fee`, `l1GasUsed`, …) that are *not* consensus data; differences there would be
   presentation, not evidence.
 
+## 5. Found while searching for prior measurements
+
+- **erigontech/erigon #23062 (2026).** Erigon 3.5.2/3.5.3 archive nodes: small reorgs near the tip
+  left persistent corruption so that `eth_getLogs` *contradicts the node's own*
+  `eth_getBlockReceipts` — missing logs and a phantom log with the wrong `logIndex`. This is exactly the
+  check `verify-receipts` runs: `eth_getLogs` for a block versus that block's proven receipts.
+- **bnb-chain/bsc #3853.** BSC public dataseed endpoints return `[]` (success) for logs that verifiably
+  exist; BNB's docs say `eth_getLogs` is disabled there. An empty success where a refusal was meant —
+  the failure mode I count as `empty_success`.
+- **EIP-7792 "Verifiable logs".** Proposes protocol-level log accumulators so `eth_getLogs` answers can be
+  proven complete for *filtered* queries. Until something like it ships, a filtered query can only be
+  proven by fetching every receipt in the range, which is what my adjudication step does.
+- **Provider limit comparisons** (solidrpc.io, Chainstack docs): providers differ on block-range caps,
+  result caps and history depth. I measured the three I use directly instead of relying on these.
+
 ## Search before claiming
 
-I searched GitHub and the web for existing cross-provider log-completeness measurements on Ethereum
-mainnet. I found the client-level work above and indexer write-ups, but no published per-provider
-disagreement rate with intervals. That does not mean none exists; the README does not claim "first".
+I searched the web and a developer index of GitHub issues/repos for existing cross-provider
+log-completeness *measurements* on Ethereum mainnet. I found client-level testing (EtherDiffer), bug
+reports (above) and indexer write-ups, but no published per-provider disagreement rate with confidence
+intervals. That does not mean none exists; the README does not claim "first".
