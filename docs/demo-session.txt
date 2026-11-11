@@ -1,0 +1,17 @@
+$ chain-evidence heads | jq -c 'to_entries[] | {provider: .key, finalized: .value.finalized, latest: .value.latest}'
+{"provider":"publicnode","finalized":26394959,"latest":26395037}
+{"provider":"drpc","finalized":26394959,"latest":26395037}
+{"provider":"1rpc","finalized":null,"latest":null}
+$ chain-evidence verify-receipts --block 26394659 | jq -c '.[] | {provider, receipts_n, header_hash_ok, transactions_root_ok, receipts_root_ok, getlogs_missing, error}'
+{"provider":"publicnode","receipts_n":234,"header_hash_ok":true,"transactions_root_ok":true,"receipts_root_ok":true,"getlogs_missing":0}
+{"provider":"drpc","receipts_n":234,"header_hash_ok":true,"transactions_root_ok":true,"receipts_root_ok":true,"getlogs_missing":0}
+{"provider":"1rpc","receipts_n":null,"header_hash_ok":true,"transactions_root_ok":true,"receipts_root_ok":null,"getlogs_missing":null,"error":"skipped: no eth_getBlockReceipts and 234 txs > per-tx limit 80"}
+$ chain-evidence logs --from 26394659 --to 26394668 --address 0xdac17f958d2ee523a2206206994597c13d831ec7 --out usdt.json | jq -c '{agree, providers: (.providers | map_values({count, missing})), range_final: .finality.range_final}'
+{"agree":true,"providers":{"publicnode":{"count":958,"missing":0},"drpc":{"count":958,"missing":0}},"range_final":true}
+$ chain-evidence verify-bundle usdt.json
+OK: bundle intact
+$ sed -i '0,/"logIndex": "0x[0-9a-f]*"/s//"logIndex": "0x7777"/' usdt.json   # edit one log
+$ chain-evidence verify-bundle usdt.json
+TAMPERED:
+  bundle_sha256 does not match contents
+  result_sha256 mismatch for provider publicnode
