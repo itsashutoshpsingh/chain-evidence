@@ -77,6 +77,14 @@ def logs_stats(data, chain):
         for prov, e in json.loads(r["errors"]).items():
             err_text[prov][e[:90]] += 1
     out["error_messages"] = {k: v.most_common(6) for k, v in err_text.items()}
+    for kind in ("final", "final_deep"):
+        c = [r for r in comp if r["kind"] == kind]
+        k = [r for r in c if r["agree"] == "False"]
+        p_, lo_, hi_ = wilson(len(k), len(c))
+        out[kind] = {"ranges": sum(1 for r in final if r["kind"] == kind), "comparable": len(c),
+                     "disagreements": len(k), "rate": p_, "ci": [lo_, hi_],
+                     "missing_logs": sum(sum(v[1] for v in json.loads(r["per_provider"]).values()) for r in k),
+                     "empty_success": sum(1 for r in k if r["empty_success"])}
     per_run = []
     for run in out["runs"]:
         c = [r for r in comp if r["run_id"] == run]
@@ -243,9 +251,12 @@ def main():
     table = ["| Chain | Ranges checked | Comparable (≥2 answers) | Disagreements | Missing logs | Not finalised (checked separately) |",
              "|---|---|---|---|---|---|"]
     for s in stats:
-        table.append(f"| {s['chain']} | {s['ranges']} | {s['comparable']} | {s['disagreements']} "
-                     f"({100 * s['rate']:.1f}%, 95% CI {100 * s['ci'][0]:.1f}–{100 * s['ci'][1]:.1f}%) | "
-                     f"{s['missing_logs']} | {s['near_head']} ({s['near_head_disagree']} disagreed) |")
+        for kind, label in (("final", "recent"), ("final_deep", "deep history")):
+            k = s[kind]
+            table.append(f"| {s['chain']} ({label}) | {k['ranges']} | {k['comparable']} | {k['disagreements']} "
+                         f"({100 * k['rate']:.1f}%, 95% CI {100 * k['ci'][0]:.1f}–{100 * k['ci'][1]:.1f}%) | "
+                         f"{k['missing_logs']} | {s['near_head'] if kind == 'final' else '—'}"
+                         f"{' (' + str(s['near_head_disagree']) + ' disagreed)' if kind == 'final' else ''} |")
     rt = ["| Provider | Blocks proven | Header hash | transactionsRoot | receiptsRoot | eth_getLogs vs proven receipts | Not checked |",
           "|---|---|---|---|---|---|---|"]
     for k, v in sorted(rs.items()):

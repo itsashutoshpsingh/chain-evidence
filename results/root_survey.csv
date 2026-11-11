@@ -98,3 +98,6 @@ run_id,chain,provider,block,hash,number,receipts_method,receipts_n,header_hash_o
 20261111T233707Z,base,publicnode,56102779,0x7f35cbda20572e1fb2a46c92e7df3e7391bf3b369e798bc0410769f868c68cf3,56102779,eth_getBlockReceipts,65,True,True,True,True,0,0,0,,,
 20261111T233707Z,base,base-official,56102779,0x7f35cbda20572e1fb2a46c92e7df3e7391bf3b369e798bc0410769f868c68cf3,56102779,eth_getBlockReceipts,65,True,True,True,True,,,,HTTP 429,,
 20261111T233707Z,base,1rpc,56102779,,,,,,,,,,,,,"block unavailable: -32001: You've reached the usage limit for your current plan. To continue with higher limits and uninterrupted access, please upgrade here: https://www.1rpc.io/#pricing",
+20261111T233707Z,base,publicnode,56018051,0x5ccbe46c0afbc799c00d804a9f6ab0d4b6896a1939542c0cde5df5952b1cf44b,56018051,eth_getBlockReceipts,19,True,True,True,True,0,0,0,,,
+20261111T233707Z,base,base-official,56018051,0x5ccbe46c0afbc799c00d804a9f6ab0d4b6896a1939542c0cde5df5952b1cf44b,56018051,eth_getBlockReceipts,19,True,True,True,True,,,,HTTP 429,,
+20261111T233707Z,base,1rpc,56018051,,,,,,,,,,,,,"block unavailable: -32001: You've reached the usage limit for your current plan. To continue with higher limits and uninterrupted access, please upgrade here: https://www.1rpc.io/#pricing",
