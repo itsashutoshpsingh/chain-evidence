@@ -127,6 +127,10 @@ def verify_receipts(providers, number: int, per_tx_max: int = 80) -> list[dict]:
         r = call(p, "eth_getBlockReceipts", [hex(number)])
         receipts = r.result if r.ok else None
         row["receipts_method"] = "eth_getBlockReceipts" if r.ok else None
+        if r.ok and r.result is None and b.ok and b.result and b.result["transactions"]:
+            # success with no data: the most dangerous answer, because it looks like "no receipts"
+            row["receipts_null"] = True
+            row["error"] = "null result for eth_getBlockReceipts (success, no data)"
         if not r.ok and b.ok and b.result and len(b.result["transactions"]) > per_tx_max:
             row["error"] = (f"skipped: no eth_getBlockReceipts and {len(b.result['transactions'])} txs "
                             f"> per-tx limit {per_tx_max}")

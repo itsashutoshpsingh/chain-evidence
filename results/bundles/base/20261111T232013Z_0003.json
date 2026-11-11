@@ -1,0 +1,122 @@
+{
+ "schema": "chain-evidence/bundle/v1",
+ "tool": "chain-evidence 0.1.0",
+ "created_at": "2026-11-11T23:21:39+00:00",
+ "chain": "base",
+ "request": {
+  "method": "eth_getLogs",
+  "params": [
+   {
+    "fromBlock": "0x35a0daa",
+    "toBlock": "0x35a0daa"
+   }
+  ]
+ },
+ "responses": [
+  {
+   "provider": "publicnode",
+   "method": "eth_getLogs",
+   "params": [
+    {
+     "fromBlock": "0x35a0daa",
+     "toBlock": "0x35a0daa"
+    }
+   ],
+   "ok": true,
+   "result": [
+    {
+     "address": "0xb8c6f7fb1d5b77e66fd4c1ad4b8403da7d3a0241",
+     "topics": [
+      "0x97c777cefca010c1fea42950a7680578ac24f7381c79ca87a31e41e4dd814889",
+      "0x0000000000000000000000000000000000000000000000000000000000000003",
+      "0x0000000000000000000000000000000000000000000000000000000000000000",
+      "0x00000000000000000000000072ab388e2e2f6facef59e3c3fa2c4e29011c2d38"
+     ],
+     "data": "0x",
+     "blockHash": "0xad5bb83dbe71963f58530a3e45fd19a883e34aff8bf473cad1b633b7729aed62",
+     "blockNumber": "0x35a0daa",
+     "blockTimestamp": "0x6af4efbc",
+     "transactionHash": "0xb3df54b3f96414ac700a7921363d4e2902990fe4bc01252b97698980ea87c42f",
+     "transactionIndex": "0x2",
+     "logIndex": "0x0",
+     "removed": false,
+     "blockTimestampMs": "0x1a1ccc87980"
+    }
+   ],
+   "error": null,
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:21:19.318+00:00",
+   "received_at": "2026-11-11T23:21:19.432+00:00",
+   "latency_ms": 114.6,
+   "endpoint": "https://base-rpc.publicnode.com",
+   "result_sha256": "bf003c244093929357f6050e9c549293c6f17f9d6290d1c3887b82303b0d76a7"
+  },
+  {
+   "provider": "base-official",
+   "method": "eth_getLogs",
+   "params": [
+    {
+     "fromBlock": "0x35a0daa",
+     "toBlock": "0x35a0daa"
+    }
+   ],
+   "ok": false,
+   "result": null,
+   "error": "HTTP 429",
+   "attempts": 4,
+   "sent_at": "2026-11-11T23:21:31.562+00:00",
+   "received_at": "2026-11-11T23:21:31.648+00:00",
+   "latency_ms": 86.4,
+   "endpoint": "https://mainnet.base.org",
+   "result_sha256": null
+  },
+  {
+   "provider": "1rpc",
+   "method": "eth_getLogs",
+   "params": [
+    {
+     "fromBlock": "0x35a0daa",
+     "toBlock": "0x35a0daa"
+    }
+   ],
+   "ok": false,
+   "result": null,
+   "error": "-32001: You've reached the usage limit for your current plan. To continue with higher limits and uninterrupted access, please upgrade here: https://www.1rpc.io/#pricing",
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:21:19.821+00:00",
+   "received_at": "2026-11-11T23:21:19.902+00:00",
+   "latency_ms": 81.3,
+   "endpoint": "https://1rpc.io/base",
+   "result_sha256": null
+  }
+ ],
+ "comparison": {
+  "agree": null,
+  "union": null,
+  "providers": {},
+  "errors": {
+   "base-official": "HTTP 429",
+   "1rpc": "-32001: You've reached the usage limit for your current plan. To continue with higher limits and uninterrupted access, please upgrade here: https://www.1rpc.io/#pricing"
+  }
+ },
+ "finality": {
+  "heads": {
+   "publicnode": {
+    "finalized": 56237905,
+    "latest": 56244193
+   },
+   "base-official": {
+    "finalized": 56239892,
+    "latest": 56244193
+   },
+   "1rpc": {
+    "finalized": null,
+    "latest": null
+   }
+  },
+  "floor": 56237905,
+  "range_final": true
+ },
+ "proofs": null,
+ "bundle_sha256": "f3c9a8b98d22c4f469f0797016ce6ac993343d69c5c24d46c27c197dc7803fc3"
+}

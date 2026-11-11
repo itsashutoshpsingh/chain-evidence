@@ -127,6 +127,8 @@ def tx_survey(providers, chain, n=50, seed=None, log=print):
         b = checks.tx(providers, chain, h, prove=len(rows) < 10)  # full proof on the first 10 only
         c = b["comparison"]
         row = {"run_id": run_id, "chain": chain, "tx": h, "agree": c["agree"],
+               "block": int(blk.result["number"], 16), "finalized_floor": floor,
+               "null_receipt_from": ",".join(c["receipt"].get("null_from", [])),
                "receipt_diff": ",".join(c["receipt"].get("fields", [])),
                "tx_diff": ",".join(c["transaction"].get("fields", [])),
                "errors": json.dumps(c["errors"]),
@@ -155,7 +157,7 @@ def root_survey(providers, chain, n=20, seed=None, per_tx_max=80, log=print):
                 f"getLogs_missing={r.get('getlogs_missing')} err={r.get('error', '')[:60]}")
     keys = ["run_id", "chain", "provider", "block", "hash", "number", "receipts_method", "receipts_n",
             "header_hash_ok", "transactions_root_ok", "receipts_root_ok", "receipts_block_hash_ok",
-            "getlogs_missing", "getlogs_mismatch", "getlogs_extra", "getlogs_error", "error"]
+            "getlogs_missing", "getlogs_mismatch", "getlogs_extra", "getlogs_error", "receipts_null", "error"]
     _append("root_survey.csv", [{k: r.get(k, "") for k in keys} for r in rows])
     return run_id, rows
 
