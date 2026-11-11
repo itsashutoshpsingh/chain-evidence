@@ -1,0 +1,165 @@
+{
+ "schema": "chain-evidence/bundle/v1",
+ "tool": "chain-evidence 0.1.0",
+ "created_at": "2026-11-11T23:11:11+00:00",
+ "chain": "ethereum",
+ "request": {
+  "method": "eth_getLogs",
+  "params": [
+   {
+    "fromBlock": "0x192bdb1",
+    "toBlock": "0x192bdb1",
+    "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+    "topics": [
+     "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+    ]
+   }
+  ]
+ },
+ "responses": [
+  {
+   "provider": "publicnode",
+   "method": "eth_getLogs",
+   "params": [
+    {
+     "fromBlock": "0x192bdb1",
+     "toBlock": "0x192bdb1",
+     "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+     ]
+    }
+   ],
+   "ok": true,
+   "result": [
+    {
+     "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "0x000000000000000000000000f6195ac71e71cacb02b2646b1fa1163f041843b4",
+      "0x00000000000000000000000093228d328c9c74c2bfe9f97638bbb5ef322f2bd5"
+     ],
+     "data": "0x00000000000000000000000000000000000000000000002320887427c2b77800",
+     "blockNumber": "0x192bdb1",
+     "transactionHash": "0x68a9e975ace4fc7f9676a8758f53b24b259b88a79f7c30d67cdbb1356ab565a6",
+     "transactionIndex": "0xd",
+     "blockHash": "0xf575061f91a09a8f7da6db17de1fffcce2f8890b05dd3d76ba7722141cb4e027",
+     "logIndex": "0x113f",
+     "removed": false,
+     "blockTimestamp": "0x6af4cdef"
+    }
+   ],
+   "error": null,
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:11:10.234+00:00",
+   "received_at": "2026-11-11T23:11:10.427+00:00",
+   "latency_ms": 192.4,
+   "endpoint": "https://ethereum-rpc.publicnode.com",
+   "result_sha256": "7a5f512094558f48ab3f9bf5595d43bf0407f918a62aecb186cf12ddcbe7e217"
+  },
+  {
+   "provider": "drpc",
+   "method": "eth_getLogs",
+   "params": [
+    {
+     "fromBlock": "0x192bdb1",
+     "toBlock": "0x192bdb1",
+     "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+     ]
+    }
+   ],
+   "ok": true,
+   "result": [
+    {
+     "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+      "0x000000000000000000000000f6195ac71e71cacb02b2646b1fa1163f041843b4",
+      "0x00000000000000000000000093228d328c9c74c2bfe9f97638bbb5ef322f2bd5"
+     ],
+     "data": "0x00000000000000000000000000000000000000000000002320887427c2b77800",
+     "blockHash": "0xf575061f91a09a8f7da6db17de1fffcce2f8890b05dd3d76ba7722141cb4e027",
+     "blockNumber": "0x192bdb1",
+     "blockTimestamp": "0x6af4cdef",
+     "transactionHash": "0x68a9e975ace4fc7f9676a8758f53b24b259b88a79f7c30d67cdbb1356ab565a6",
+     "transactionIndex": "0xd",
+     "logIndex": "0x113f",
+     "removed": false
+    }
+   ],
+   "error": null,
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:11:10.236+00:00",
+   "received_at": "2026-11-11T23:11:10.343+00:00",
+   "latency_ms": 107.6,
+   "endpoint": "https://eth.drpc.org",
+   "result_sha256": "7a5f512094558f48ab3f9bf5595d43bf0407f918a62aecb186cf12ddcbe7e217"
+  },
+  {
+   "provider": "1rpc",
+   "method": "eth_getLogs",
+   "params": [
+    {
+     "fromBlock": "0x192bdb1",
+     "toBlock": "0x192bdb1",
+     "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+     "topics": [
+      "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+     ]
+    }
+   ],
+   "ok": false,
+   "result": null,
+   "error": "-32001: You've reached the usage limit for your current plan. To continue with higher limits and uninterrupted access, please upgrade here: https://www.1rpc.io/#pricing",
+   "attempts": 1,
+   "sent_at": "2026-11-11T23:11:11.652+00:00",
+   "received_at": "2026-11-11T23:11:11.729+00:00",
+   "latency_ms": 77.5,
+   "endpoint": "https://1rpc.io/eth",
+   "result_sha256": null
+  }
+ ],
+ "comparison": {
+  "agree": true,
+  "union": 1,
+  "providers": {
+   "publicnode": {
+    "count": 1,
+    "missing": 0,
+    "content_mismatch": 0,
+    "missing_keys": []
+   },
+   "drpc": {
+    "count": 1,
+    "missing": 0,
+    "content_mismatch": 0,
+    "missing_keys": []
+   }
+  },
+  "errors": {
+   "1rpc": "-32001: You've reached the usage limit for your current plan. To continue with higher limits and uninterrupted access, please upgrade here: https://www.1rpc.io/#pricing"
+  }
+ },
+ "finality": {
+  "heads": {
+   "publicnode": {
+    "finalized": 26394799,
+    "latest": 26394888
+   },
+   "drpc": {
+    "finalized": 26394799,
+    "latest": 26394888
+   },
+   "1rpc": {
+    "finalized": null,
+    "latest": null
+   }
+  },
+  "floor": 26394799,
+  "range_final": true
+ },
+ "proofs": null,
+ "bundle_sha256": "68c8fc91d8cca3ac6b5b6efed7bb9f70515b2d3602bbfd912cc9827a5634767a"
+}
