@@ -16,7 +16,8 @@ from .providers import Provider
 # Messages that mean "try again later", not "this is the answer".
 TRANSIENT = ("rate limit", "too many", "capacity", "timeout", "timed out", "temporarily",
              "try again", "busy", "overloaded", "method not available", "upstream",
-             "internal error", "bad gateway", "unavailable")
+             "internal error", "remote error", "bad gateway", "unavailable",
+             "header not found", "no response")
 _locks: dict[str, threading.Lock] = {}
 _last: dict[str, float] = {}
 _session = requests.Session()
