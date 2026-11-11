@@ -53,7 +53,7 @@ def _row(run_id, chain, kind, shape, frm, to, addr, topic0, b, header=None):
     return {
         "run_id": run_id, "chain": chain, "kind": kind, "shape": shape, "from_block": frm, "to_block": to,
         "address": addr or "", "topic0": "transfer" if topic0 else "",
-        "providers_ok": len(per), "errors": json.dumps(c.get("errors", {})),
+        "providers_ok": sum(1 for r in b["responses"] if r["ok"]), "errors": json.dumps(c.get("errors", {})),
         "agree": c.get("agree"), "union": c.get("union"),
         "empty_success": ",".join(p for p, v in per.items() if v["count"] == 0 and (c.get("union") or 0) > 0),
         "per_provider": json.dumps({p: [v["count"], v["missing"], v["content_mismatch"]] for p, v in per.items()}),
