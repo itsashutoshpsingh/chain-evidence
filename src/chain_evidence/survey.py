@@ -104,9 +104,9 @@ def logs_survey(providers, chain, n_final=200, n_head=30, seed=None, keep_agree=
             if hdr and hdr["comparison"].get("agree") is False:
                 _save_bundle(chain, run_id + "_hdr", i, hdr)
         rows.append(row)
+        _append("logs_survey.csv", [row])  # per row, so an interrupted run keeps its data
         log(f"[{i + 1}/{len(plan)}] {chain} {kind} {shape} {frm}-{to} agree={row['agree']} "
             f"ok={row['providers_ok']} hdr={row['header_agree']}")
-    _append("logs_survey.csv", rows)
     return run_id, rows
 
 

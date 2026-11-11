@@ -58,7 +58,7 @@ def is_transient(msg: str) -> bool:
     return any(t in m for t in TRANSIENT)
 
 
-def call(p: Provider, method: str, params: list, retries: int = 5, timeout: float = 60) -> Answer:
+def call(p: Provider, method: str, params: list, retries: int = 4, timeout: float = 60) -> Answer:
     ans = Answer(p.name, method, params, ok=False)
     for attempt in range(1, retries + 1):
         _pace(p)
@@ -87,7 +87,7 @@ def call(p: Provider, method: str, params: list, retries: int = 5, timeout: floa
         except (requests.RequestException, ValueError) as ex:
             ans.received_at = _utc()
             ans.error = f"{type(ex).__name__}: {ex}"[:300]
-        time.sleep(min(2 ** attempt, 30))
+        time.sleep(min(2 * attempt, 8))
     return ans
 
 
