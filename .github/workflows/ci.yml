@@ -1,0 +1,18 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -r requirements.txt && pip install -e .
+      - run: pytest -q   # offline: recorded blocks only, no RPC calls
+      - name: verify every published evidence bundle is intact
+        run: |
+          for f in results/bundles/*/*.json; do [ -e "$f" ] || continue; chain-evidence verify-bundle "$f" >/dev/null || { echo "tampered: $f"; exit 1; }; done
