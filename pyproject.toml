@@ -7,7 +7,7 @@ name = "chain-evidence"
 version = "0.1.0"
 description = "Cross-check on-chain evidence across independent RPC providers and prove receipts against block headers."
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 authors = [{name = "Ashutosh Pal Singh"}]
 requires-python = ">=3.11"
 dependencies = [
