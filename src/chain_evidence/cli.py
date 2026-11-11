@@ -48,6 +48,11 @@ def main(argv=None):
     s.add_argument("--tx-sample", type=int, default=0)
     s.add_argument("--root-sample", type=int, default=0)
     s.add_argument("--seed", type=int)
+    s = sub.add_parser("audit", help="prove a sample of blocks from a dataset's window and check each provider")
+    s.add_argument("--from", dest="frm", type=int, required=True)
+    s.add_argument("--to", type=int, required=True)
+    s.add_argument("--sample", type=int, default=40)
+    s.add_argument("--seed", type=int, default=0)
     a = ap.parse_args(argv)
 
     if a.cmd == "verify-bundle":
@@ -78,6 +83,8 @@ def main(argv=None):
             survey.tx_survey(ps, a.chain, a.tx_sample, a.seed)
         if a.root_sample:
             survey.root_survey(ps, a.chain, a.root_sample, a.seed)
+    elif a.cmd == "audit":
+        survey.block_audit(ps, a.chain, a.frm, a.to, a.sample, a.seed)
     return 0
 
 

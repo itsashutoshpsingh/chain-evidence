@@ -158,3 +158,37 @@ def root_survey(providers, chain, n=20, seed=None, per_tx_max=80, log=print):
             "getlogs_missing", "getlogs_mismatch", "getlogs_extra", "getlogs_error", "error"]
     _append("root_survey.csv", [{k: r.get(k, "") for k in keys} for r in rows])
     return run_id, rows
+
+
+def block_audit(providers, chain, frm, to, n=40, seed=0, log=print):
+    """Audit a dataset's input window: prove sampled blocks, then compare each provider's
+    single-block eth_getLogs (Transfer topic) with the Transfer logs in the proven receipts."""
+    from . import compare
+    from .query import call
+    rng = random.Random(seed)
+    blocks = sorted(rng.sample(range(frm, to + 1), n))
+    rows = []
+    for i, number in enumerate(blocks):
+        pb = checks.proven_block(providers, number)
+        row = {"chain": chain, "block": number, "proven": pb["verify"] is not None,
+               "proof_source": pb["verify"]["source"] if pb["verify"] else "",
+               "hash_consensus": pb["verify"]["hash_consensus"] if pb["verify"] else ""}
+        truth = [l for r in (pb["receipts"] or []) for l in r["logs"]
+                 if l["topics"] and l["topics"][0].lower() == checks.TRANSFER]
+        row["true_transfer_logs"] = len(truth) if pb["verify"] else ""
+        for p in providers:
+            a = call(p, "eth_getLogs", [{"fromBlock": hex(number), "toBlock": hex(number), "topics": [checks.TRANSFER]}])
+            if not a.ok:
+                row[f"{p.name}"] = "error: " + (a.error or "")[:80]
+            elif pb["verify"]:
+                c = compare.compare_logs({"truth": truth, p.name: a.result})["providers"][p.name]
+                row[f"{p.name}"] = "ok" if (c["missing"] == 0 and c["content_mismatch"] == 0 and
+                                            len(a.result) == len(truth)) else \
+                    f"DIFF missing={c['missing']} mismatch={c['content_mismatch']} n={len(a.result)}"
+            else:
+                row[f"{p.name}"] = f"unproven n={len(a.result)}"
+        rows.append(row)
+        log(f"[audit {i + 1}/{n}] {number} proven={row['proven']} " +
+            " ".join(f"{p.name}={row[p.name][:30]}" for p in providers))
+    _append(f"audit_{chain}_{frm}_{to}.csv", rows)
+    return rows
