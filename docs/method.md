@@ -31,7 +31,10 @@ any provider. Ranges ending above that floor are "near head": they are measured,
 own column and never adjudicated, because lag between providers is expected there.
 
 On Base the same rule uses the OP Stack `finalized` head, which follows L1 finality of the batch
-(see reading notes §4).
+(see reading notes §4). `scripts/sample_heads.py base 30 120` sampled every provider's heads every two
+minutes for an hour. Base's `finalized` head trailed `latest` by a median of ~5,000 blocks (~2.8 hours
+at 2 s per block), far longer than the 15–30 minutes the OP Stack docs give for OP Mainnet. Providers
+also disagreed about where `finalized` was (see `results/heads_base.csv` and the README).
 
 ## Proof: who is right?
 

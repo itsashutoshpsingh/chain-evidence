@@ -73,6 +73,23 @@ findings = f"""1. **Silent empty answers on older blocks.** In the deep-history 
     + ("; the 1rpc one was for a transaction only ~2.9 days old that both other providers returned"
        if any("1rpc" in r.get("null_receipt_from", "") for r in tx_exc) else "") + "."
     if tx_exc and all(r.get("null_receipt_from") for r in tx_exc) else "")
+hb = [r for r in csv.DictReader(open(ROOT / "results/heads_base.csv")) if r["run_id"].startswith("heads-")]
+byrun = {}
+for r in hb:
+    if r["finalized"]:
+        byrun.setdefault(r["run_id"], {})[r["provider"]] = int(r["finalized"])
+def _behind(p):
+    lags = [max(d.values()) - d[p] for d in byrun.values() if p in d]
+    return sum(1 for x in lags if x > 0), len(lags), max(lags, default=0)
+fl = S["finality_lag"]["base"]
+pn, o1 = _behind("publicnode"), _behind("1rpc")
+findings += f"""
+6. **"Finalized" means different things to different providers.** Across {fl['samples']} snapshots of Base heads
+   (mostly every two minutes for an hour), the `finalized` head sat a median {fl['median_blocks']:,} blocks
+   (~{fl['median_minutes'] / 60:.1f} h) behind `latest`. publicnode's `finalized` was behind base.org's in {pn[0]}/{pn[1]}
+   samples (by up to {pn[2]:,} blocks), and 1rpc's was stale in {o1[0]}/{o1[1]} (by up to {o1[2]:,} blocks,
+   ~{o1[2] * 2 / 3600:.1f} h). This tool takes the lowest `finalized` head across providers, so staleness makes it
+   more cautious, never less."""
 audit_txt = (f"{len(a40)}/{len(a40)} sampled blocks were proven against their headers, and {len(audit)} blocks "
              f"of its stored Parquet data ({dl:,} `Transfer` logs) matched the proven receipts exactly: "
              f"0 missing, 0 extra, 0 altered.")

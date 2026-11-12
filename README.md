@@ -36,6 +36,12 @@ block hash locally, so the true set of logs is known without trusting any provid
 5. **Transactions agree when they are answered.** 62/70
    Ethereum and 30/30 Base transactions had identical
    transaction and receipt objects across answering providers. The Ethereum exceptions were all `null` receipts: 1 from 1rpc, 7 from publicnode; the 1rpc one was for a transaction only ~2.9 days old that both other providers returned.
+6. **"Finalized" means different things to different providers.** Across 31 snapshots of Base heads
+   (mostly every two minutes for an hour), the `finalized` head sat a median 5,033 blocks
+   (~2.8 h) behind `latest`. publicnode's `finalized` was behind base.org's in 12/30
+   samples (by up to 2,219 blocks), and 1rpc's was stale in 28/28 (by up to 17,376 blocks,
+   ~9.7 h). This tool takes the lowest `finalized` head across providers, so staleness makes it
+   more cautious, never less.
 
 <p align="center"><img src="docs/img/receipt_depth.png" width="90%" alt="publicnode returns null receipts for blocks older than about six days"></p>
 
