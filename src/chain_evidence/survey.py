@@ -103,7 +103,7 @@ def logs_survey(providers, chain, n_final=200, n_head=30, seed=None, keep_agree=
         b = checks.logs(providers, chain, frm, to, addr, topic0, heads=h)
         hdr = checks.block_headers(providers, chain, frm) if shape == "block" else None
         row = _row(run_id, chain, kind, shape, frm, to, addr, topic0, b, hdr)
-        if row["agree"] is False or (hdr and hdr["comparison"].get("agree") is False) or kept < keep_agree:
+        if row["agree"] is False or (hdr and hdr["comparison"].get("agree") is False) or (row["agree"] and kept < keep_agree):
             if row["agree"]:
                 kept += 1
             row["bundle"] = _save_bundle(chain, run_id, i, b)

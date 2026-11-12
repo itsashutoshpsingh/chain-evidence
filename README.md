@@ -1,8 +1,11 @@
 # chain-evidence
 
-**{{HEADLINE}}**
+**Across 524 finalised Ethereum block ranges asked of three free RPC providers, every recent range agreed (383/383), but on older blocks a provider silently returned nothing where receipt proofs show 286 logs (2/20 comparable ranges), and publicnode returned `null` receipts for 7/7 sampled transactions older than ~6 days.**
 
-{{TABLE}}
+| Chain | Ranges checked | Comparable (≥2 answers) | Disagreements | Missing logs | Not finalised (checked separately) |
+|---|---|---|---|---|---|
+| ethereum (recent) | 383 | 383 | 0 (0.0%, 95% CI 0.0–1.0%) | 0 | 80 (0 disagreed) |
+| ethereum (deep history) | 141 | 20 | 2 (10.0%, 95% CI 2.8–30.1%) | 286 | — |
 
 ![What each provider returned for the same question](docs/img/provider_outcomes.png)
 
@@ -13,7 +16,26 @@ block hash locally, so the true set of logs is known without trusting any provid
 
 ## What I found
 
-{{FINDINGS}}
+1. **Silent empty answers on older blocks.** In the deep-history stratum (9,000–50,000 blocks back),
+   1rpc answered 2 finalised queries with `[]` and no error. Each time, the adjudicator rebuilt
+   the true log set from receipts that reproduce `receiptsRoot` and found the logs were there:
+   286 missing logs in total. No recent range showed this
+   (383 comparable, 0 disagreements).
+2. **`null` receipts past ~6 days.** publicnode returns `result: null` for `eth_getTransactionReceipt` and
+   `eth_getBlockReceipts` on blocks older than about 43,700–45,000 blocks, while `eth_getTransactionByHash`
+   still returns the transaction. A reader would conclude the transaction has no receipt. It happened in
+   7 of 70 sampled Ethereum transactions: every sampled transaction at least 47,687 blocks deep and none at 43,674 or less.
+3. **Most failures are refusals, not lies.** publicnode refuses `eth_getLogs` beyond ~5,000–10,000 blocks,
+   drpc's free tier refuses ranges over a few hundred blocks (while its message says 10,000), and
+   mainnet.base.org refuses `eth_getLogs` outright. All of these are honest errors and are counted as
+   errors, never as disagreements (see the chart above).
+4. **Proofs held everywhere they could be run.** 101 of 101 provider-block pairs on
+   Ethereum and Base reproduced the header hash, `transactionsRoot` and `receiptsRoot`, including blob
+   (type 3), EIP-7702 (type 4) and OP Stack deposit (`0x7e`) transactions. No provider served altered
+   receipts; the failures were missing data, not wrong data.
+5. **Transactions agree when they are answered.** 62/70
+   Ethereum and 30/30 Base transactions had identical
+   transaction and receipt objects across answering providers. The Ethereum exceptions were all `null` receipts: 1 from 1rpc, 7 from publicnode; the 1rpc one was for a transaction only ~2.9 days old that both other providers returned.
 
 <p align="center"><img src="docs/img/receipt_depth.png" width="90%" alt="publicnode returns null receipts for blocks older than about six days"></p>
 
@@ -22,7 +44,14 @@ block hash locally, so the true set of logs is known without trusting any provid
 Two providers agreeing does not make an answer complete. Every block below was rebuilt from the
 provider's own data and checked against the header the whole network agrees on.
 
-{{ROOTS}}
+| Provider | Blocks checked | Header hash | transactionsRoot | receiptsRoot | eth_getLogs vs proven receipts | `null` receipts (success, no data) | Not checked (refused / quota) |
+|---|---|---|---|---|---|---|---|
+| base/1rpc | 0 | 0/0 | 0/0 | 0/0 | n/a | 0 | 25 |
+| base/base-official | 25 | 25/25 | 25/25 | 25/25 | n/a | 0 | 0 |
+| base/publicnode | 25 | 25/25 | 25/25 | 25/25 | 25/25 match | 0 | 0 |
+| ethereum/1rpc | 0 | 0/0 | 0/0 | 0/0 | n/a | 0 | 28 |
+| ethereum/drpc | 28 | 28/28 | 28/28 | 28/28 | 28/28 match | 0 | 0 |
+| ethereum/publicnode | 23 | 23/23 | 23/23 | 23/23 | 5/5 match | 5 | 0 |
 
 <p align="center"><img src="docs/img/receipts_root_proofs.png" width="90%" alt="Header, transaction and receipt roots recomputed per provider"></p>
 
@@ -99,7 +128,7 @@ CI re-verifies the hash of every published bundle on every push.
 
 [`evm-cluster-check`](https://github.com/itsashutoshpsingh/evm-cluster-check) measures false links made by
 Ethereum address-clustering rules over 1–3 November 2026. Before its results were read, its inputs went
-through this tool: {{AUDIT}} See [`results/evm-cluster-check-input-audit.md`](results/evm-cluster-check-input-audit.md).
+through this tool: 40/40 sampled blocks were proven against their headers, and 40 blocks of its stored Parquet data (19,640 `Transfer` logs) matched the proven receipts exactly: 0 missing, 0 extra, 0 altered. See [`results/evm-cluster-check-input-audit.md`](results/evm-cluster-check-input-audit.md).
 
 ## More charts
 

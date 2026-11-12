@@ -1,6 +1,7 @@
 """Fill README placeholders from results/ (run after `python -m chain_evidence.report`)."""
 import csv
 import json
+from collections import Counter
 import re
 from pathlib import Path
 
@@ -39,13 +40,12 @@ checked_blocks = sum(v.get("checked", 0) for v in roots.values())
 dl = sum(int(r["true_logs"]) for r in audit)
 
 headline = (
-    f"Asked three free Ethereum RPC providers the same `eth_getLogs` question across {eth['ranges']} finalised "
-    f"block ranges. {'All ' if rec['disagreements'] == 0 else ''}{rec['comparable'] - rec['disagreements']} of {rec['comparable']} comparable recent ranges agreed (95% CI 0–{100 * rec['ci'][1]:.1f}% "
-    f"disagreement). On older blocks, {deep['disagreements']} of {deep['comparable']} comparable ranges disagreed"
-    + (f", and every one was a provider returning an **empty success** where receipt proofs show "
-       f"{deep['missing_logs']} logs. " if all_empty else f" ({deep['missing_logs']} logs missing). ")
-    + f"publicnode also returned `null` receipts for {len(nulls)} of {len(deep_txs)} "
-    f"sampled transactions older than ~6 days.")
+    f"Across {eth['ranges']} finalised Ethereum block ranges asked of three free RPC providers, every recent "
+    f"range agreed ({rec['comparable'] - rec['disagreements']}/{rec['comparable']}), but on older blocks a provider "
+    f"silently returned nothing where receipt proofs show {deep['missing_logs']} logs "
+    f"({deep['disagreements']}/{deep['comparable']} comparable ranges), and publicnode returned `null` receipts for "
+    f"{len([r for r in deep_txs if 'publicnode' in r.get('null_receipt_from', '')])}/{len(deep_txs)} sampled "
+    f"transactions older than ~6 days.")
 findings = f"""1. **Silent empty answers on older blocks.** In the deep-history stratum (9,000–50,000 blocks back),
    {' and '.join(empty_provs)} answered {deep['empty_success']} finalised queries with `[]` and no error. Each time, the adjudicator rebuilt
    the true log set from receipts that reproduce `receiptsRoot` and found the logs were there:
@@ -67,8 +67,12 @@ findings = f"""1. **Silent empty answers on older blocks.** In the deep-history 
    receipts; the failures were missing data, not wrong data.
 5. **Transactions agree when they are answered.** {sum(1 for r in eth_tx if r['agree'] == 'True')}/{len(eth_tx)}
    Ethereum and {sum(1 for r in base_tx if r['agree'] == 'True')}/{len(base_tx)} Base transactions had identical
-   transaction and receipt objects across answering providers.""" + (
-    " Every Ethereum exception is a publicnode `null` receipt from finding 2." if exc_null and tx_exc else "")
+   transaction and receipt objects across answering providers. """ + (
+    "The Ethereum exceptions were all `null` receipts: " + ", ".join(
+        f"{n} from {p}" for p, n in sorted(Counter(p for r in tx_exc for p in r.get("null_receipt_from", "").split(",") if p).items()))
+    + ("; the 1rpc one was for a transaction only ~2.9 days old that both other providers returned"
+       if any("1rpc" in r.get("null_receipt_from", "") for r in tx_exc) else "") + "."
+    if tx_exc and all(r.get("null_receipt_from") for r in tx_exc) else "")
 audit_txt = (f"{len(a40)}/{len(a40)} sampled blocks were proven against their headers, and {len(audit)} blocks "
              f"of its stored Parquet data ({dl:,} `Transfer` logs) matched the proven receipts exactly: "
              f"0 missing, 0 extra, 0 altered.")

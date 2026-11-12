@@ -264,6 +264,27 @@ def root_stats(roots):
     return {f"{c}/{p}": dict(v) for (c, p), v in out.items()}
 
 
+def finality_lag(chain, block_seconds):
+    """latest - finalized per sample (max over providers' latest, per provider's finalized)."""
+    by = defaultdict(dict)
+    for r in rows(f"heads_{chain}.csv"):
+        if r["finalized"] and r["latest"]:
+            by[r["run_id"]][r["provider"]] = (int(r["finalized"]), int(r["latest"]))
+    lags, spread = [], []
+    for run, d in by.items():
+        top = max(l for _, l in d.values())
+        fins = [f for f, _ in d.values()]
+        lags.append(top - max(fins))
+        spread.append(max(fins) - min(fins))
+    if not lags:
+        return None
+    lags.sort()
+    return {"samples": len(lags), "median_blocks": lags[len(lags) // 2], "min_blocks": lags[0], "max_blocks": lags[-1],
+            "median_minutes": round(lags[len(lags) // 2] * block_seconds / 60, 1),
+            "max_provider_finalized_spread_blocks": max(spread),
+            "samples_with_spread": sum(1 for x in spread if x)}
+
+
 def main():
     data = rows("logs_survey.csv")
     roots = rows("root_survey.csv")
@@ -302,6 +323,7 @@ def main():
         if eth else "",
         "metrics": [],
         "stats": stats, "roots": rs, "tx": tx, "charts": made,
+        "finality_lag": {"ethereum": finality_lag("ethereum", 12), "base": finality_lag("base", 2)},
     }
     for s in stats:
         summary["metrics"] += [
@@ -314,6 +336,7 @@ def main():
                                    "value": f"{v.get('rroot_ok', 0)}/{v.get('checked', 0)}"})
     (RES / "summary.json").write_text(json.dumps(summary, indent=1, default=str))
     print((RES / "summary.md").read_text())
+    print(json.dumps(summary["finality_lag"]))
     print(json.dumps({s["chain"]: {k: s[k] for k in ("ranges", "comparable", "disagreements", "rate", "ci",
                                                        "empty_success", "near_head", "near_head_disagree",
                                                        "deep_ranges", "deep_comparable", "wrong_by_provider")}
