@@ -88,6 +88,8 @@ def logs_stats(data, chain):
     per_run = []
     for run in out["runs"]:
         c = [r for r in comp if r["run_id"] == run]
+        if len(c) < 20:
+            continue  # interrupted runs: their rows count in totals, but a per-run rate would be noise
         k = sum(1 for r in c if r["agree"] == "False")
         per_run.append({"run_id": run, "n": len(c), "k": k, **dict(zip(("rate", "lo", "hi"), wilson(k, len(c))))})
     out["per_run"] = per_run
@@ -219,6 +221,25 @@ def charts(stats, roots):
         fig.savefig(IMG / "receipts_root_proofs.png", dpi=200)
         plt.close(fig)
         made.append("docs/img/receipts_root_proofs.png")
+    # 5. how deep does publicnode keep receipts? (sampled Ethereum transactions)
+    tx = [r for r in rows("tx_survey.csv") if r["chain"] == "ethereum" and r.get("block") and r.get("finalized_floor")]
+    if tx:
+        fig, ax = plt.subplots(figsize=(9, 2.6))
+        for null, col, lab in ((False, GREEN, "receipt returned"), (True, RED, "`null` receipt (success, no data)")):
+            xs = [(int(r["finalized_floor"]) - int(r["block"])) / 7200 for r in tx
+                  if ("publicnode" in r.get("null_receipt_from", "")) == null]
+            ax.scatter(xs, [0.5 + (0.12 if null else -0.12)] * len(xs), s=46, color=col, alpha=0.85,
+                       label=f"{lab} (n={len(xs)})", edgecolors=BG)
+        ax.set_yticks([])
+        ax.set_ylim(0, 1)
+        ax.set_xlabel("age of the transaction's block (days behind the finalised head, 7,200 blocks/day)")
+        ax.set_title("publicnode eth_getTransactionReceipt: silent `null` past ~6 days", loc="left", color=GREEN)
+        ax.legend(loc="upper left", frameon=False, fontsize=8)
+        ax.grid(axis="x", alpha=0.4)
+        fig.tight_layout()
+        fig.savefig(IMG / "receipt_depth.png", dpi=200)
+        plt.close(fig)
+        made.append("docs/img/receipt_depth.png")
     return made
 
 
