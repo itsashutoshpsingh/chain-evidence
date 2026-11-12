@@ -77,13 +77,28 @@ I added columns to the transaction and root surveys while an older process was s
 two layouts ended up in one CSV. I repaired the file by column count (`scripts/repair_csv.py`), and
 `_append` now rewrites a file with the union of columns whenever the schema changes, with a test.
 
-## 9. Smaller things
+## 9. A survey process died without a trace
+
+The first Base receipt-proof run stopped after 15 of 25 blocks. There was no traceback, no
+out-of-memory message in the kernel log, and it was not killed by the survey's own retry logic. Because
+that survey wrote its CSV only at the end, the 15 blocks were lost and had to be re-run (the 25 Base
+blocks in the results are from the re-run). Every survey now writes each row as it completes.
+
+## 10. 1rpc's `finalized` tag is stale on both chains
+
+On Ethereum it sat at block 26,394,543 for at least 40 minutes while publicnode and drpc advanced. On
+Base, heads sampled every two minutes showed 1rpc's `finalized` frozen at 56,251,175 across many
+consecutive samples while the other two moved together. My finality rule takes the *lowest*
+`finalized` head, so a stale tag makes comparisons more conservative, never less. But a tool that
+trusted 1rpc's tag alone would treat fresh blocks as unfinalised for an hour or more.
+
+## 11. Smaller things
 
 - drpc's refusal says "ranges over 10000 blocks are not supported on free plan", but it refuses a
   500-block range. The enforced limit (between 100 and 500 blocks) does not match the message.
-- 1rpc's `finalized` tag stayed at block 26,394,543 for at least 40 minutes while the other providers
-  advanced by hundreds of blocks. Using the *lowest* `finalized` head across providers keeps
-  comparisons safe, but it shrinks the comparable window.
+- The 1rpc transaction case: for one transaction only ~20,700 blocks (~2.9 days) old, 1rpc returned a
+  `null` receipt while publicnode and drpc both returned it. So `null` receipts are not only a
+  six-day-history effect at publicnode.
 - Error classification is by message text. A provider that invents a new wording for "rate limited"
   would be filed as a policy refusal until the list is updated. It would never be filed as a
   disagreement.
