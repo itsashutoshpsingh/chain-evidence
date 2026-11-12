@@ -1,4 +1,4 @@
-"""Fill README placeholders from results/ (run after `python -m chain_evidence.report`)."""
+"""Write README.md from scripts/README.template.md and results/ (run after `python -m chain_evidence.report`)."""
 import csv
 import json
 from collections import Counter
@@ -93,7 +93,7 @@ findings += f"""
 audit_txt = (f"{len(a40)}/{len(a40)} sampled blocks were proven against their headers, and {len(audit)} blocks "
              f"of its stored Parquet data ({dl:,} `Transfer` logs) matched the proven receipts exactly: "
              f"0 missing, 0 extra, 0 altered.")
-r = (ROOT / "README.md").read_text()
+r = (ROOT / "scripts/README.template.md").read_text()
 for k, v in {"HEADLINE": headline, "TABLE": logs_table, "FINDINGS": findings, "ROOTS": roots_table,
              "AUDIT": audit_txt}.items():
     r = r.replace("{{" + k + "}}", v)
