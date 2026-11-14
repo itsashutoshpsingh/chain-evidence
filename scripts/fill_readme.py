@@ -112,9 +112,9 @@ S["viz"] = [
     {"title": "Recent blocks always agreed; older blocks did not", "unit": "%", "bars": [
         {"label": f"Recent ({rec['comparable']} ranges)", "value": round(100 * rec["disagreements"] / rec["comparable"], 1), "tone": "good"},
         {"label": f"Older than about 6 days ({deep['comparable']} ranges)", "value": round(100 * deep["disagreements"] / deep["comparable"], 1), "tone": "bad"}]},
-    {"title": "What three providers answered to the same Ethereum questions", "unit": "count", "bars": [
+    {"title": "Most answers from three Ethereum providers matched; refusals were the main failure", "unit": "count", "bars": [
         {"label": NAMES[k][0], "value": totals[k], "tone": NAMES[k][1]} for k in NAMES if k in totals]},
-    {"title": "Logs silently missing where receipt proofs show they exist", "unit": "count", "bars": [
+    {"title": "Only older ranges silently missed logs that receipt proofs show exist", "unit": "count", "bars": [
         {"label": "Recent ranges", "value": rec["missing_logs"], "tone": "good"},
         {"label": "Older ranges", "value": deep["missing_logs"], "tone": "bad"}]},
 ]

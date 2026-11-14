@@ -7,8 +7,10 @@ from collections import Counter, defaultdict
 from .providers import ROOT
 
 RES, IMG = ROOT / "results", ROOT / "docs" / "img"
-BG, FG, GRID = "#0b0f14", "#c9d1d9", "#1f2933"
-GREEN, AMBER, RED, BLUE, GREY = "#00e5a0", "#ffb000", "#ff4d6d", "#4cc9f0", "#6e7681"
+# Portfolio chart style (BUILD_RULES.md, "Charts"): solid colours, Carlito, capitalised labels.
+BG, FG, FG2, GRID = "#0C1421", "#FFFFFF", "#C9D4E2", "#1F2E45"
+BLUE, GREEN, RED, YELLOW, WHITE = "#3B82F6", "#22C55E", "#EF4444", "#FACC15", "#FFFFFF"
+CHAIN = {"ethereum": "Ethereum", "base": "Base"}
 POLICY = ("usage limit", "archive", "limited to", "must not exceed", "specify an address", "not supported on free",
           "discontinued", "not allowed", "personal token", "pruned")
 
@@ -98,9 +100,11 @@ def logs_stats(data, chain):
 
 def _style(plt):
     plt.rcParams.update({"figure.facecolor": BG, "axes.facecolor": BG, "savefig.facecolor": BG,
-                         "text.color": FG, "axes.labelcolor": FG, "xtick.color": FG, "ytick.color": FG,
-                         "axes.edgecolor": GRID, "grid.color": GRID, "font.family": "monospace",
-                         "font.size": 10, "axes.titleweight": "bold", "axes.titlesize": 12})
+                         "text.color": FG, "axes.labelcolor": FG, "xtick.color": FG2, "ytick.color": FG2,
+                         "axes.edgecolor": GRID, "grid.color": GRID, "font.family": "Carlito",
+                         "font.size": 11, "axes.titleweight": "bold", "axes.titlesize": 15, "axes.labelsize": 12,
+                         "xtick.labelsize": 11, "ytick.labelsize": 11, "legend.fontsize": 11, "legend.labelcolor": FG,
+                         "axes.axisbelow": True})
 
 
 def charts(stats, roots):
@@ -112,29 +116,29 @@ def charts(stats, roots):
     made = []
     # 1. hero: what each provider did with every request
     cats = [("answered, matches", GREEN), ("answered, differs", RED),
-            ("answered, no second answer to compare", BLUE), ("refused (policy)", AMBER),
-            ("failed (after retries)", GREY)]
+            ("answered, no second answer to compare", BLUE), ("refused (policy)", YELLOW),
+            ("failed (after retries)", WHITE)]
     labels, data = [], []
     for s in stats:
         for prov, o in sorted(s["outcomes"].items()):
-            labels.append(f"{s['chain']}/{prov}")
+            labels.append(f"{CHAIN[s['chain']]}/{prov}")
             data.append(o)
     fig, ax = plt.subplots(figsize=(9, 0.55 * len(labels) + 1.6))
     left = [0] * len(labels)
     for cat, col in cats:
         vals = [d.get(cat, 0) / max(1, sum(d.values())) * 100 for d in data]
-        ax.barh(labels, vals, left=left, color=col, label=cat, height=0.6)
+        ax.barh(labels, vals, left=left, color=col, label=cat[0].upper() + cat[1:], height=0.6)
         for i, v in enumerate(vals):
             if v >= 7:
-                ax.text(left[i] + v / 2, i, f"{v:.0f}%", ha="center", va="center", color=BG, fontsize=8,
+                ax.text(left[i] + v / 2, i, f"{v:.0f}%", ha="center", va="center", color=BG, fontsize=11,
                         fontweight="bold")
         left = [a + b for a, b in zip(left, vals)]
     ax.invert_yaxis()
     ax.set_xlim(0, 100)
-    ax.set_xlabel("% of requests")
-    ax.set_title("Same question, every provider: what came back", loc="left", color=GREEN)
-    ax.legend(ncol=3, loc="upper center", bbox_to_anchor=(0.5, -0.2), frameon=False, fontsize=8)
-    ax.grid(axis="x", alpha=0.4)
+    ax.set_xlabel("Requests (%)")
+    ax.set_title("Providers rarely disagreed; most failures were refusals, not wrong answers", loc="left")
+    ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.2), frameon=False)
+    ax.grid(axis="x")
     fig.tight_layout()
     fig.savefig(IMG / "provider_outcomes.png", dpi=200)
     plt.close(fig)
@@ -147,15 +151,17 @@ def charts(stats, roots):
         for pr in s["per_run"]:
             ax.errorbar([x], [pr["rate"] * 100], yerr=[[100 * (pr["rate"] - pr["lo"])], [100 * (pr["hi"] - pr["rate"])]],
                         fmt="o", color=col, ecolor=col, capsize=5, ms=7)
-            ax.text(x + 0.08, pr["rate"] * 100, f" {pr['k']}/{pr['n']}", va="center", fontsize=8)
+            ax.text(x + 0.08, pr["rate"] * 100, f" {pr['k']}/{pr['n']}", va="center", fontsize=11)
             ticks.append(x)
-            names.append(f"{s['chain']}\n{pr['run_id'][9:13]}Z")
+            names.append(f"{CHAIN[s['chain']]}\n{pr['run_id'][9:13]}Z")
             x += 1
         x += 0.6
-    ax.set_xticks(ticks, names, fontsize=8)
-    ax.set_ylabel("finalised ranges that disagree (%)")
-    ax.set_title("Disagreement rate per run, 95% Wilson interval", loc="left", color=GREEN)
-    ax.grid(axis="y", alpha=0.4)
+    ax.set_xticks(ticks, names, fontsize=11)
+    ax.set_ylabel("Finalised ranges that disagree (%)")
+    worst = max((pr for s in stats for pr in s["per_run"]), key=lambda pr: pr["rate"], default=None)
+    ax.set_title(f"The worst run had {worst['k']} of {worst['n']} finalised ranges disagree (95% Wilson interval)"
+                 if worst else "Disagreement rate per run (95% Wilson interval)", loc="left")
+    ax.grid(axis="y")
     ax.set_ylim(bottom=0)
     fig.tight_layout()
     fig.savefig(IMG / "disagreement_rate.png", dpi=200)
@@ -180,13 +186,14 @@ def charts(stats, roots):
         fig, ax = plt.subplots(figsize=(9, 0.5 * len(agg) + 1.4))
         ks = sorted(agg)
         mx = [max(agg[k]) for k in ks]
-        ax.barh(ks, mx, color=[RED if m > 64 else GREEN for m in mx], height=0.55)
+        ax.barh([CHAIN[k.split("/")[0]] + k[k.index("/"):] for k in ks], mx, color=[RED if m > 64 else GREEN for m in mx],
+                height=0.55)
         for i, k in enumerate(ks):
-            ax.text(mx[i], i, f"  max {mx[i]} blocks behind (n={len(agg[k])} runs)", va="center", fontsize=8)
+            ax.text(mx[i], i, f"  Max {mx[i]} blocks behind (n={len(agg[k])} runs)", va="center", fontsize=11)
         ax.invert_yaxis()
-        ax.set_xlabel("blocks behind the most advanced provider's `finalized` head")
-        ax.set_title("How stale is each provider's `finalized` tag?", loc="left", color=GREEN)
-        ax.grid(axis="x", alpha=0.4)
+        ax.set_xlabel("Blocks behind the most advanced provider's `finalized` head")
+        ax.set_title(f"A provider's `finalized` head can lag up to {max(mx):,} blocks behind the others", loc="left")
+        ax.grid(axis="x")
         ax.set_xlim(0, max(mx) * 1.6 + 5)
         fig.tight_layout()
         fig.savefig(IMG / "finalized_lag.png", dpi=200)
@@ -206,17 +213,20 @@ def charts(stats, roots):
             else:
                 agg[k]["root mismatch"] += 1
         ks = sorted(agg)
-        fig, ax = plt.subplots(figsize=(9, 0.5 * len(ks) + 1.6))
+        fig, ax = plt.subplots(figsize=(10, 0.5 * len(ks) + 1.6))
         left = [0] * len(ks)
         for cat, col in (("all roots reproduce", GREEN), ("root mismatch", RED),
-                         ("null receipts (success, no data)", AMBER), ("not checked", GREY)):
+                         ("null receipts (success, no data)", YELLOW), ("not checked", WHITE)):
             vals = [agg[k].get(cat, 0) for k in ks]
-            ax.barh(ks, vals, left=left, color=col, label=cat, height=0.55)
+            ax.barh([CHAIN[k.split("/")[0]] + k[k.index("/"):] for k in ks], vals, left=left, color=col,
+                    label=cat[0].upper() + cat[1:], height=0.55)
             left = [a + b for a, b in zip(left, vals)]
         ax.invert_yaxis()
-        ax.set_xlabel("blocks")
-        ax.set_title("Header hash + transactionsRoot + receiptsRoot recomputed locally", loc="left", color=GREEN)
-        ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.25), frameon=False, fontsize=8)
+        ax.set_xlabel("Blocks")
+        ax.set_title("No checked block failed to reproduce its header hash, transactionsRoot and receiptsRoot"
+                     if not any(a.get("root mismatch") for a in agg.values())
+                     else "Header hash, transactionsRoot and receiptsRoot recomputed locally", loc="left")
+        ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.25), frameon=False)
         fig.tight_layout()
         fig.savefig(IMG / "receipts_root_proofs.png", dpi=200)
         plt.close(fig)
@@ -224,18 +234,18 @@ def charts(stats, roots):
     # 5. how deep does publicnode keep receipts? (sampled Ethereum transactions)
     tx = [r for r in rows("tx_survey.csv") if r["chain"] == "ethereum" and r.get("block") and r.get("finalized_floor")]
     if tx:
-        fig, ax = plt.subplots(figsize=(9, 2.6))
-        for null, col, lab in ((False, GREEN, "receipt returned"), (True, RED, "`null` receipt (success, no data)")):
+        fig, ax = plt.subplots(figsize=(10, 3))
+        for null, col, lab in ((False, GREEN, "Receipt returned"), (True, RED, "`null` receipt (success, no data)")):
             xs = [(int(r["finalized_floor"]) - int(r["block"])) / 7200 for r in tx
                   if ("publicnode" in r.get("null_receipt_from", "")) == null]
-            ax.scatter(xs, [0.5 + (0.12 if null else -0.12)] * len(xs), s=46, color=col, alpha=0.85,
+            ax.scatter(xs, [0.5 + (0.12 if null else -0.12)] * len(xs), s=46, color=col,
                        label=f"{lab} (n={len(xs)})", edgecolors=BG)
         ax.set_yticks([])
         ax.set_ylim(0, 1)
-        ax.set_xlabel("age of the transaction's block (days behind the finalised head, 7,200 blocks/day)")
-        ax.set_title("publicnode eth_getTransactionReceipt: silent `null` past ~6 days", loc="left", color=GREEN)
-        ax.legend(loc="upper left", frameon=False, fontsize=8)
-        ax.grid(axis="x", alpha=0.4)
+        ax.set_xlabel("Age of the transaction's block (days behind the finalised head, 7,200 blocks/day)")
+        ax.set_title("publicnode silently returns `null` receipts for blocks older than about 6 days", loc="left")
+        ax.legend(loc="upper left", frameon=False)
+        ax.grid(axis="x")
         fig.tight_layout()
         fig.savefig(IMG / "receipt_depth.png", dpi=200)
         plt.close(fig)
@@ -327,12 +337,13 @@ def main():
     }
     for s in stats:
         summary["metrics"] += [
-            {"label": f"{s['chain']}: finalised ranges compared", "value": s["comparable"]},
-            {"label": f"{s['chain']}: disagreement rate", "value": f"{100 * s['rate']:.1f}% (95% CI {100 * s['ci'][0]:.1f}–{100 * s['ci'][1]:.1f}%)"},
-            {"label": f"{s['chain']}: empty successes (0 logs where logs exist)", "value": s["empty_success"]},
+            {"label": f"{CHAIN[s['chain']]} finalised ranges compared", "value": s["comparable"]},
+            {"label": f"{CHAIN[s['chain']]} disagreement rate", "value": f"{100 * s['rate']:.1f}% (95% CI {100 * s['ci'][0]:.1f}–{100 * s['ci'][1]:.1f}%)"},
+            {"label": f"{CHAIN[s['chain']]} empty successes (0 logs where logs exist)", "value": s["empty_success"]},
         ]
     for k, v in sorted(rs.items()):
-        summary["metrics"].append({"label": f"{k}: blocks whose receipts reproduce receiptsRoot",
+        chain, prov = k.split("/", 1)
+        summary["metrics"].append({"label": f"{CHAIN[chain]} blocks from {prov} whose receipts reproduce receiptsRoot",
                                    "value": f"{v.get('rroot_ok', 0)}/{v.get('checked', 0)}"})
     (RES / "summary.json").write_text(json.dumps(summary, indent=1, default=str))
     print((RES / "summary.md").read_text())

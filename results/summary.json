@@ -3,51 +3,51 @@
  "headline": "Across 524 finalised Ethereum block ranges asked of three free RPC providers, every recent range agreed (383/383), but on older blocks a provider silently returned nothing where receipt proofs show 286 logs (2/20 comparable ranges), and publicnode returned `null` receipts for 7/7 sampled transactions older than ~6 days.",
  "metrics": [
   {
-   "label": "ethereum: finalised ranges compared",
+   "label": "Ethereum finalised ranges compared",
    "value": 403
   },
   {
-   "label": "ethereum: disagreement rate",
+   "label": "Ethereum disagreement rate",
    "value": "0.5% (95% CI 0.1\u20131.8%)"
   },
   {
-   "label": "ethereum: empty successes (0 logs where logs exist)",
+   "label": "Ethereum empty successes (0 logs where logs exist)",
    "value": 2
   },
   {
-   "label": "base: finalised ranges compared",
+   "label": "Base finalised ranges compared",
    "value": 0
   },
   {
-   "label": "base: disagreement rate",
+   "label": "Base disagreement rate",
    "value": "0.0% (95% CI 0.0\u20130.0%)"
   },
   {
-   "label": "base: empty successes (0 logs where logs exist)",
+   "label": "Base empty successes (0 logs where logs exist)",
    "value": 0
   },
   {
-   "label": "base/1rpc: blocks whose receipts reproduce receiptsRoot",
+   "label": "Base blocks from 1rpc whose receipts reproduce receiptsRoot",
    "value": "0/0"
   },
   {
-   "label": "base/base-official: blocks whose receipts reproduce receiptsRoot",
+   "label": "Base blocks from base-official whose receipts reproduce receiptsRoot",
    "value": "25/25"
   },
   {
-   "label": "base/publicnode: blocks whose receipts reproduce receiptsRoot",
+   "label": "Base blocks from publicnode whose receipts reproduce receiptsRoot",
    "value": "25/25"
   },
   {
-   "label": "ethereum/1rpc: blocks whose receipts reproduce receiptsRoot",
+   "label": "Ethereum blocks from 1rpc whose receipts reproduce receiptsRoot",
    "value": "0/0"
   },
   {
-   "label": "ethereum/drpc: blocks whose receipts reproduce receiptsRoot",
+   "label": "Ethereum blocks from drpc whose receipts reproduce receiptsRoot",
    "value": "28/28"
   },
   {
-   "label": "ethereum/publicnode: blocks whose receipts reproduce receiptsRoot",
+   "label": "Ethereum blocks from publicnode whose receipts reproduce receiptsRoot",
    "value": "23/23"
   }
  ],
@@ -356,7 +356,7 @@
    ]
   },
   {
-   "title": "What three providers answered to the same Ethereum questions",
+   "title": "Most answers from three Ethereum providers matched; refusals were the main failure",
    "unit": "count",
    "bars": [
     {
@@ -387,7 +387,7 @@
    ]
   },
   {
-   "title": "Logs silently missing where receipt proofs show they exist",
+   "title": "Only older ranges silently missed logs that receipt proofs show exist",
    "unit": "count",
    "bars": [
     {
