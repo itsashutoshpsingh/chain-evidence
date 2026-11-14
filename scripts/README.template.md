@@ -1,5 +1,8 @@
 # chain-evidence
 
+[![tests](https://github.com/itsashutoshpsingh/chain-evidence/actions/workflows/ci.yml/badge.svg)](https://github.com/itsashutoshpsingh/chain-evidence/actions/workflows/ci.yml)
+![licence](https://img.shields.io/badge/licence-MIT-00e5a0)
+
 **{{HEADLINE}}**
 
 {{TABLE}}

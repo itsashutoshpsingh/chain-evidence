@@ -1,5 +1,8 @@
 # chain-evidence
 
+[![tests](https://github.com/itsashutoshpsingh/chain-evidence/actions/workflows/ci.yml/badge.svg)](https://github.com/itsashutoshpsingh/chain-evidence/actions/workflows/ci.yml)
+![licence](https://img.shields.io/badge/licence-MIT-00e5a0)
+
 **Across 524 finalised Ethereum block ranges asked of three free RPC providers, every recent range agreed (383/383), but on older blocks a provider silently returned nothing where receipt proofs show 286 logs (2/20 comparable ranges), and publicnode returned `null` receipts for 7/7 sampled transactions older than ~6 days.**
 
 | Chain | Ranges checked | Comparable (≥2 answers) | Disagreements | Missing logs | Not finalised (checked separately) |
