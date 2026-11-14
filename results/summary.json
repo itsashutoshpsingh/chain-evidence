@@ -337,5 +337,70 @@
    "max_provider_finalized_spread_blocks": 17376,
    "samples_with_spread": 29
   }
- }
+ },
+ "viz": [
+  {
+   "title": "Recent blocks always agreed; older blocks did not",
+   "unit": "%",
+   "bars": [
+    {
+     "label": "Recent (383 ranges)",
+     "value": 0.0,
+     "tone": "good"
+    },
+    {
+     "label": "Older than about 6 days (20 ranges)",
+     "value": 10.0,
+     "tone": "bad"
+    }
+   ]
+  },
+  {
+   "title": "What three providers answered to the same Ethereum questions",
+   "unit": "count",
+   "bars": [
+    {
+     "label": "Matched",
+     "value": 1061,
+     "tone": "good"
+    },
+    {
+     "label": "Differed",
+     "value": 2,
+     "tone": "bad"
+    },
+    {
+     "label": "Refused by policy",
+     "value": 614,
+     "tone": "neutral"
+    },
+    {
+     "label": "No second answer",
+     "value": 121,
+     "tone": "neutral"
+    },
+    {
+     "label": "Failed after retries",
+     "value": 14,
+     "tone": "warn"
+    }
+   ]
+  },
+  {
+   "title": "Logs silently missing where receipt proofs show they exist",
+   "unit": "count",
+   "bars": [
+    {
+     "label": "Recent ranges",
+     "value": 0,
+     "tone": "good"
+    },
+    {
+     "label": "Older ranges",
+     "value": 286,
+     "tone": "bad"
+    }
+   ]
+  }
+ ]
 }
